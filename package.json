@@ -2,9 +2,9 @@
   "name": "survey-chicken-facebook",
   "version": "1.0.0",
   "description": "",
-  "main": "survey-chicken-facebook.js",
+  "main": "surveychicken-facebook.js",
   "scripts": {
-    "start": "node survey-chicken-facebook.js"
+    "start": "node surveychicken-facebook.js"
   },
   "author": "",
   "license": "ISC",
