@@ -144,6 +144,32 @@ controller.setupWebserver(process.env.PORT || 3000, function(err, webserver) {
     });
 });
 
+function saveUserToMongoDb(id, first_name, last_name, gender, locale, timezone) {
+	mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
+		if (err) throw err;
+		var results = db.collection('results');
+		results.insert({
+			user: {
+				username: username,
+				first_name: first_name,
+				last_name: last_name,
+        gender: gender,
+        locale: locale,
+        timezone: timezone,
+        platform: facebook
+			},
+			chicken_survey: {
+				chk_burger: "1",
+				chk_cake: "1",
+				chk_cone: "1",
+				chk_dog: "1",
+				emoji: "<3",
+        contact: "user@user.com"
+			}
+		})
+	})
+}
+
 saveToMongoDb = function (id, value, key) {
     mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
         if (err) throw err;
@@ -203,7 +229,8 @@ saveUserToMongoDb = function (id, first_name, last_name, gender, locale, timezon
                 last_name: last_name,
                 gender: gender,
                 locale: locale,
-                timezone: timezone
+                timezone: timezone,
+                platform: facebook
             },
         })
     })
@@ -211,7 +238,6 @@ saveUserToMongoDb = function (id, first_name, last_name, gender, locale, timezon
 
 /// GET USER INFO !!!
 getProfile = function (id, cb) {
-
     if (!cb) cb = Function.prototype
 
     request({
@@ -231,38 +257,24 @@ getProfile = function (id, cb) {
 }
 
 controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
-    getProfile(message.user, function(err, profile) {
-        var attachment = {
-            'type':'template',
-            'payload':{
-                'template_type':'button',
-                'text': `Hello ${profile.first_name}, Please choose a survey to begin.`,
-                'buttons':[
-                    {
-                    'type':'postback',
-                    'title':`Chicken survey`,
-                    'payload':`yes(chcken)`
-                    },
-                    {
-                    'type':'postback',
-                    'title':`Canadian Values Index`,
-                    'payload':`yes(cndval)`
-                    },
-                    {
-                    'type':'postback',
-                    'title':`No thanks`,
-                    'payload':`no(survey)`
-                    },
-                ]
+  getProfile(message.user, function(err, user) {
+    bot.reply(message, {
+        text: `Hey ${user.firstName}! I’m the host here at Survey Chicken.  If you get lost, or if you want a fresh start just text “Hi” and I’ll take you back to the beginning. What would you like to do first?`,
+        quick_replies: [
+            {
+                "content_type": "text",
+                "title": "Take a survey",
+                "payload": "Take a survey",
+            },
+            {
+                "content_type": "text",
+                "title": "Tell me a joke",
+                "payload": "Tell me a joke",
             }
-        };
-        bot.reply(message, {
-            attachment: attachment,
-        });
-
-        saveUserToMongoDb(`${message.user}`,`${profile.first_name}`, `${profile.last_name}`, `${profile.gender}`, `${profile.locale}`, `${profile.timezone}`)
-
+        ]
     });
+    saveUserToMongoDb(`${message.user}`,`${user.first_name}`, `${user.last_name}`, `${user.gender}`, `${user.locale}`, `${user.timezone}`)
+  });
 });
 
 controller.hears(['what can I do here?'], 'message_received', function(bot, message) {
