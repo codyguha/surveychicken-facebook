@@ -156,7 +156,7 @@ function saveUserToMongoDb(id, first_name, last_name, gender, locale, timezone) 
         gender: gender,
         locale: locale,
         timezone: timezone,
-        platform: facebook
+        platform: "facebook"
 			},
 			chicken_survey: {
 				chk_burger: "1",
