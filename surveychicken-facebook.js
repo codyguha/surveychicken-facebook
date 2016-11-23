@@ -216,7 +216,7 @@ getProfile = function (id, cb) {
 
     request({
       method: 'GET',
-      uri: `https://graph.facebook.com/v2.6/${id}`,
+      uri: `https://graph.facebook.com/v2.8/${id}`,
       qs: {
         fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
         access_token: process.env.page_token
@@ -232,7 +232,7 @@ getProfile = function (id, cb) {
 
 controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
     getProfile(message.user, function(err, profile) {
-      console.log(profile)
+      console.log(message.user)
         var attachment = {
             'type':'template',
             'payload':{
