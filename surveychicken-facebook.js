@@ -218,7 +218,7 @@ getProfile = function (id, cb) {
       method: 'GET',
       uri: `https://graph.facebook.com/v2.6/${id}`,
       qs: {
-        fields: 'first_name,last_name,profile_pic,gender,locale,timezone',
+        fields: 'first_name, last_name, gender,locale,timezone',
         access_token: process.env.page_token
       },
       json: true
