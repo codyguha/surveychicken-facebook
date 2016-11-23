@@ -232,11 +232,12 @@ getProfile = function (id, cb) {
 
 controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
     getProfile(message.user, function(err, profile) {
+      console.log(profile)
         var attachment = {
             'type':'template',
             'payload':{
                 'template_type':'button',
-                'text': `Hello ${profile.first_name}, Please choose a survey to begin.`,
+                'text': `Hello, Please choose a survey to begin.`,
                 'buttons':[
                     {
                     'type':'postback',
