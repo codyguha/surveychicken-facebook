@@ -1,1 +1,1 @@
-web: node survey-chicken-facebook.js
+web: node surveychicken-facebook.js
