@@ -2,133 +2,6 @@ var Botkit = require('botkit/lib/Botkit.js');
 var mongodb = require('mongodb');
 const request = require('request');
 
-const SURVEY = [
-                {
-                    text: "(1/15) Canadian society should work towards...",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q01_r01.jpg",
-                    r_01: "Greater acceptance of people who are LGBTQ (lesbian, gay, bi-sexual, transgender, queer)",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q01_r02.jpeg",
-                    r_02: "More recognition of the importance of traditional families where a man is married to a woman",
-                    pl_code_01: "q01_r01",
-                    pl_code_02: "q01_r02"
-                },{
-                    text: "(2/15) Canada's immigration and refugee policies should...",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q02_r01.jpg",
-                    r_01: "Give priority to people in crisis abroad",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q02_r02.jpg",
-                    r_02: "Give priority to Canada's own economic and workforce needs",
-                    pl_code_01: "q02_r01",
-                    pl_code_02: "q02_r02"
-                },{
-                    text: "(3/15) In Canada, we should...",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q03_r01.jpg",
-                    r_01: "Keep God and religion completely out of public life",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q03_r02.jpeg",
-                    r_02: "Publicly celebrate the role of faith in our collective lives",
-                    pl_code_01: "q03_r01",
-                    pl_code_02: "q03_r02"
-                },{
-                    text: "(4/15) In the Canadian workplace:",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q04_r01.png",
-                    r_01: "Large public companies should be required to recruit and hire women",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q04_r02.jpg",
-                    r_02: "Leave it up to large public companies to make their own hiring decisions",
-                    pl_code_01: "q04_r01",
-                    pl_code_02: "q04_r02"
-                },{
-                    text: "(5/15) Regarding health care, we should...",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q05_r01.jpg",
-                    r_01: "Encourage private medical clinics outside of the public health care system",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q05_r02.jpg",
-                    r_02: "Prohibit private medical clinics outside of the public health care system",
-                    pl_code_01: "q05_r01",
-                    pl_code_02: "q05_r02"
-                },{
-                    text: "(6/15) Canada should...",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q06_r01.jpg",
-                    r_01: "Expand policies aimed at improving the situation for Indigenous Canadians",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q06_r02.jpg",
-                    r_02: "Work to remove any special status and programs for Indigenous Canadians",
-                    pl_code_01: "q06_r01",
-                    pl_code_02: "q06_r02"
-                },{
-                    text: "(7/15) There should be...",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q07_r01.jpg",
-                    r_01: "More public support for the poor, the disadvantaged and those in economic trouble",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q07_r02.jpg",
-                    r_02: "More emphasis on a system that rewards hard work and initiative",
-                    pl_code_01: "q07_r01",
-                    pl_code_02: "q07_r02"
-                },{
-                    text: "(8/15) Overall, Canada's policies should...",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q08_r01.jpg",
-                    r_01: "Emphasize environmental protection over economic growth",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q08_r02.jpg",
-                    r_02: "Emphasize economic growth over environmental protection",
-                    pl_code_01: "q08_r01",
-                    pl_code_02: "q08_r02"
-                },{
-                    text: "(9/15) Overall, it would be better to...",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q09_r01.png",
-                    r_01: "Leave the economy more to the free market",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q09_r02.jpg",
-                    r_02: "Have more government involvement and regulation of the economy",
-                    pl_code_01: "q09_r01",
-                    pl_code_02: "q09_r02"
-                },{
-                    text: "(10/15) On childcare, would you say...",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q10_r01.jpg",
-                    r_01: "A national child care program is a needed investment in the next generation",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q10_r02.jpg",
-                    r_02: "Leave it as the responsibility of parents to work out their own best child care options",
-                    pl_code_01: "q10_r01",
-                    pl_code_02: "q10_r02"
-                },{
-                    text: "(11/15) When it comes to doctor-assisted dying...",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q11_r01.jpg",
-                    r_01: "It should be easier for individual Canadians to make their own end-of-life decisions",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q11_r02.jpg",
-                    r_02: "There should be lots of safeguards restricting access to doctor-assisted death",
-                    pl_code_01: "q11_r01",
-                    pl_code_02: "q11_r02"
-                },{
-                    text: "(12/15) Do you think of Canada's oil industry in Alberta and other parts of the country as:",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q12_r01.jpg",
-                    r_01: "An overall liability because of the environmental risk",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q12_r02.jpg",
-                    r_02: "An overall asset because of its contribution to the Canadian economy",
-                    pl_code_01: "q12_r01",
-                    pl_code_02: "q12_r02"
-                },{
-                    text: "(13/15) Please indicate which one you think is more important for a child to have:",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q13_r01.jpg",
-                    r_01: "Good manners",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q13_r02.jpg",
-                    r_02: "Curiosity ",
-                    pl_code_01: "q13_r01",
-                    pl_code_02: "q13_r02"
-                },{
-                    text: "(14/15) In terms of individual success, would you say:",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q14_r01.jpg",
-                    r_01: "People who are rich mostly got there through hard work",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q14_r02.jpg",
-                    r_02: "People who are rich mostly got there through family connections or luck",
-                    pl_code_01: "q14_r01",
-                    pl_code_02: "q14_r02"
-                },{
-                    text: "(15/15) In your view:",
-                    img_01: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q15_r01.jpg",
-                    r_01: "Most of the stories you see in the news can't be trusted",
-                    img_02: "https://raw.githubusercontent.com/codyguha/survey-images/master/cndvaluesimgs/q15_r02.jpg",
-                    r_02: "News media do a good job presenting the facts",
-                    pl_code_01: "q15_r01",
-                    pl_code_02: "q15_r02"
-                }
-
-            ]
-
-var survey_step = 0
-
 var controller = Botkit.facebookbot({
     debug: true,
     access_token: process.env.page_token,
@@ -143,14 +16,32 @@ controller.setupWebserver(process.env.PORT || 3000, function(err, webserver) {
         console.log('ONLINE!');
     });
 });
+/// GET USER INFO !!!
+function getProfile(id, cb) {
+    if (!cb) cb = Function.prototype
 
+    request({
+      method: 'GET',
+      uri: `https://graph.facebook.com/v2.6/${id}`,
+      qs: {
+        fields: 'first_name, last_name, gender,locale,timezone',
+        access_token: process.env.page_token
+      },
+      json: true
+    }, function(err, res, body) {
+      if (err) return cb(err)
+      if (body.error) return cb(body.error)
+
+      cb(null, body)
+    })
+}
 function saveUserToMongoDb(id, first_name, last_name, gender, locale, timezone) {
 	mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
 		if (err) throw err;
 		var results = db.collection('results');
 		results.insert({
 			user: {
-				username: username,
+				id: id,
 				first_name: first_name,
 				last_name: last_name,
         gender: gender,
@@ -169,114 +60,42 @@ function saveUserToMongoDb(id, first_name, last_name, gender, locale, timezone) 
 		})
 	})
 }
-
-saveToMongoDb = function (id, value, key) {
-    mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
-        if (err) throw err;
-        var results = db.collection('results');
-        if (key === "relationship"){
-            results.update({
-                _id: `${id}`},
-                    {   $set: {
-                            "chicken_survey.relationship": value
-                    }
-            });
-        } else if (key === "detail"){
-            results.update({
-                _id: `${id}`},
-                    {   $set: {
-                            "chicken_survey.detail": value
-                    }
-            });
-        } else if (key === "mood"){
-            results.update({
-                _id: `${id}`},
-                    {   $set: {
-                            "chicken_survey.mood": value
-                    }
-            });
-        } else if (key === "preference"){
-            results.update({
-                _id: `${id}`},
-                    {   $set: {
-                            "chicken_survey.preference": value
-                    }
-            });
-        } else if (key === "hungry"){
-            results.update({
-                _id: `${id}`},
-                    {   $set: {
-                            "chicken_survey.hungry": value
-                    }
-            });
-        } else {
-            var target_key = "canadian_values_survey." + key
-            var target = {};
-            target[target_key] = value
-            results.update({_id: `${id}`}, {   $set:  target });
-        }
-    })
+function userValidation(user) {
+	mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
+		var results = db.collection('results');
+		results.find({
+			"user.username": user.username
+		}).toArray(function(err, found) {
+			if (found[0] === undefined) {
+				saveUserToMongoDb(user.username, user.firstName, user.lastName)
+			}
+		});
+	});
 }
 
-saveUserToMongoDb = function (id, first_name, last_name, gender, locale, timezone) {
-    mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
-        if (err) throw err;
-        var results = db.collection('results');
-        results.insert({
-            _id: id,
-            user:{
-                first_name: first_name,
-                last_name: last_name,
-                gender: gender,
-                locale: locale,
-                timezone: timezone,
-                platform: facebook
-            },
-        })
-    })
-}
-
-/// GET USER INFO !!!
-getProfile = function (id, cb) {
-    if (!cb) cb = Function.prototype
-
-    request({
-      method: 'GET',
-      uri: `https://graph.facebook.com/v2.6/${id}`,
-      qs: {
-        fields: 'first_name, last_name, gender,locale,timezone',
-        access_token: process.env.page_token
-      },
-      json: true
-    }, function(err, res, body) {
-      if (err) return cb(err)
-      if (body.error) return cb(body.error)
-
-      cb(null, body)
-    })
-}
-
-controller.hears(['hi', 'Hi'], 'message_received', function(bot, message) {
-  getProfile(message.user, function(err, user) {
-    bot.reply(message, {
-        text: `Hey ${user.firstName}! I’m the host here at Survey Chicken.  If you get lost, or if you want a fresh start just text “Hi” and I’ll take you back to the beginning. What would you like to do first?`,
-        quick_replies: [
-            {
-                "content_type": "text",
-                "title": "Take a survey",
-                "payload": "Take a survey",
-            },
-            {
-                "content_type": "text",
-                "title": "Tell me a joke",
-                "payload": "Tell me a joke",
-            }
-        ]
-    });
-    saveUserToMongoDb(`${message.user}`,`${user.first_name}`, `${user.last_name}`, `${user.gender}`, `${user.locale}`, `${user.timezone}`)
+controller.hears(['hi', 'Hi'], 'message_received', function(bot, incoming) {
+  getProfile(incoming.user, function(err, user) {
+    welcomeUser(incoming, user)
+    saveUserToMongoDb(`${incoming.user}`,`${user.first_name}`, `${user.last_name}`, `${user.gender}`, `${user.locale}`, `${user.timezone}`)
   });
 });
-
+function welcomeUser(incoming, user) {
+  bot.reply(message, {
+      text: `Hey ${user.firstName}! I’m the host here at Survey Chicken.  If you get lost, or if you want a fresh start just text “Hi” and I’ll take you back to the beginning. What would you like to do first?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Take a survey",
+              "payload": "Take a survey",
+          },
+          {
+              "content_type": "text",
+              "title": "Tell me a joke",
+              "payload": "Tell me a joke",
+          }
+      ]
+  });
+}
 controller.hears(['what can I do here?'], 'message_received', function(bot, message) {
     bot.reply(message, "You can complete surveys with me to help me complete my research!");
 });
