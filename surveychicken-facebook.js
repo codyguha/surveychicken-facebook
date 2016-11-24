@@ -125,7 +125,7 @@ controller.on('message_received', function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     if (payload === "Take a survey") {
       question001(incoming, user)
-    } else if (payload === "response_02"){
+    } else if (payload === "response_01"){
       question002(incoming, user)
       saveToMongoDb(incoming.user, text, "frequency")
     }
@@ -138,22 +138,22 @@ function question001(incoming, user){
           {
               "content_type": "text",
               "title": "On a regular basis",
-              "payload": "On a regular basis",
+              "payload": "response_01",
           },
           {
               "content_type": "text",
               "title": "Once and a while",
-              "payload": "Once and a while",
+              "payload": "response_01",
           },
           {
               "content_type": "text",
               "title": "Rarely",
-              "payload": "Rarely",
+              "payload": "response_01",
           },
           {
               "content_type": "text",
               "title": "Never",
-              "payload": "Never",
+              "payload": "response_01",
           },
       ]
   });
