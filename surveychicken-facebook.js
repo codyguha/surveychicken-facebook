@@ -578,12 +578,12 @@ function question010a(incoming, user){
       quick_replies: [
           {
               "content_type": "text",
-              "title": "When hungover",
+              "title": "Cures hungover",
               "payload": "response_10",
           },
           {
               "content_type": "text",
-              "title": "A treat",
+              "title": "Special reward",
               "payload": "response_10",
           },
           {
@@ -866,19 +866,18 @@ function getChicken(incoming, user){
         "template_type":"generic",
         "elements":[
           {
-            "title":"Welcome to Peter\'s Hats",
-            "item_url":"https://petersfancybrownhats.com",
-            "image_url":"https://petersfancybrownhats.com/company_image.png",
-            "subtitle":"We\'ve got the right hat for everyone.",
+            "title":"GET CHICKEN NOW!",
+            "item_url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
+            "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
             "buttons":[
               {
                 "type":"web_url",
-                "url":"https://petersfancybrownhats.com",
-                "title":"View Website"
+                "url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
+                "title":"GET CHICKEN!"
               },
               {
                 "type":"postback",
-                "title":"Start Chatting",
+                "title":"Not right now",
                 "payload":"DEVELOPER_DEFINED_PAYLOAD"
               }
             ]
