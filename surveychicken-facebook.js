@@ -99,7 +99,7 @@ function welcomeUser(incoming, user) {
 controller.on('message_received', function(bot, incoming) {
   console.log("GOT HERE!")
   getProfile(incoming.user, function(err, user) {
-    if (message.quick_reply.payload === "Take a survey") {
+    if (incoming.quick_reply.payload === "Take a survey") {
       question001(incoming, user)
       console.log("ALSO MADE IT HERE!")
     }
