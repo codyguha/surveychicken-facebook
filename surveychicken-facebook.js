@@ -96,7 +96,7 @@ function welcomeUser(incoming, user) {
       ]
   });
 }
-controller.on('message_received', function(bot, message) {
+controller.on('message_received', function(bot, incoming) {
   console.log("GOT HERE!")
   getProfile(incoming.user, function(err, user) {
     if (message.quick_reply.payload === "Take a survey") {
