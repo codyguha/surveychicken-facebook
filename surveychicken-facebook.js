@@ -96,7 +96,7 @@ function welcomeUser(incoming, user) {
       ]
   });
 }
-controller.on(['Take a survey'],'facebook_postback', function(bot, message) {
+controller.on(['Take a survey'],'message_received', function(bot, message) {
   getProfile(incoming.user, function(err, user) {
     question001(incoming, user)
   });
