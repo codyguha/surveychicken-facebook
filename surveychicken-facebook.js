@@ -74,14 +74,14 @@ function saveToMongoDb(id, value, key) {
 		});
 	});
 }
-function userValidation(user) {
+function userValidation(id, user) {
 	mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
 		var results = db.collection('results');
 		results.find({
-			"user.username": user.username
+			"user.id": `${id}`
 		}).toArray(function(err, found) {
 			if (found[0] === undefined) {
-				saveUserToMongoDb(user.username, user.firstName, user.lastName)
+				saveUserToMongoDb(`${id}`,`${user.first_name}`, `${user.last_name}`, `${user.gender}`, `${user.locale}`, `${user.timezone}`)
 			}
 		});
 	});
@@ -96,14 +96,13 @@ function custom_hear_middleware(patterns, message) {
     return false;
 }
 
-
 controller.hears(['hi', 'Hi'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     welcomeUser(incoming, user)
-    saveUserToMongoDb(`${incoming.user}`,`${user.first_name}`, `${user.last_name}`, `${user.gender}`, `${user.locale}`, `${user.timezone}`)
   });
 });
 function welcomeUser(incoming, user) {
+  userValidation(incoming.user, user);
   bot.reply(incoming, {
       text: `Hey ${user.first_name}! I’m the host here at Survey Chicken.  If you get lost, or if you want a fresh start just text “Hi” and I’ll take you back to the beginning. What would you like to do first?`,
       quick_replies: [
