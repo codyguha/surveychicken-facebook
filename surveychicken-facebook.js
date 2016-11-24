@@ -108,6 +108,11 @@ controller.hears(['Continue'], 'message_received',custom_hear_middleware, functi
     checkProgress(incoming, user)
   });
 });
+controller.hears(['Ok, lets do it'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  getProfile(incoming.user, function(err, user) {
+    question011(incoming, user)
+  });
+});
 function welcomeUser(incoming, user) {
   userValidation(incoming.user, user);
   bot.reply(incoming, {
@@ -622,6 +627,46 @@ function question010end(incoming, user){
               "content_type": "text",
               "title": "NO WAY!",
               "payload": "NO WAY!",
+          }
+      ]
+  });
+
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question011(incoming, user){
+  progress = 8
+  bot.reply(incoming, {
+    attachment:{
+    type:"image",
+    payload:{
+      url:"https://raw.githubusercontent.com/codyguha/survey-images/master/kikfriedchicken/FriedCH_burger.jpg"
+    },
+    quick_replies: [
+          {
+              "content_type": "text",
+              "title": "1) This looks gross",
+              "payload": "response_11",
+          },
+          {
+              "content_type": "text",
+              "title": "2) Not my first choice",
+              "payload": "response_11",
+          },
+          {
+              "content_type": "text",
+              "title": "3) I’m on the fence",
+              "payload": "response_11",
+          },
+          {
+              "content_type": "text",
+              "title": "4) This looks eatable",
+              "payload": "response_11",
+          },
+          {
+              "content_type": "text",
+              "title": "5) This looks delicious",
+              "payload": "response_11",
           }
       ]
   });
