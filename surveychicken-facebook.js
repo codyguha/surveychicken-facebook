@@ -859,7 +859,7 @@ function suggestChicken(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function getChicken(incoming, user){
-  var message = "message":{
+  var message = {
     "attachment":{
       "type":"template",
       "payload":{
