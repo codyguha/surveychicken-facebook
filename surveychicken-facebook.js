@@ -75,11 +75,13 @@ function userValidation(user) {
 
 controller.hears(['hi', 'Hi'], 'message_received', function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
+    console.log("HEARD: " + user)
     welcomeUser(incoming, user)
     saveUserToMongoDb(`${incoming.user}`,`${user.first_name}`, `${user.last_name}`, `${user.gender}`, `${user.locale}`, `${user.timezone}`)
   });
 });
 function welcomeUser(incoming, user) {
+  console.log("SENT: " + user)
   bot.reply(incoming, {
       text: `Hey ${user.firstName}! I’m the host here at Survey Chicken.  If you get lost, or if you want a fresh start just text “Hi” and I’ll take you back to the beginning. What would you like to do first?`,
       quick_replies: [
