@@ -96,11 +96,17 @@ function welcomeUser(incoming, user) {
       ]
   });
 }
-controller.on(['Take a survey'],'message_received', function(bot, message) {
-  getProfile(incoming.user, function(err, user) {
-    question001(incoming, user)
-  });
+controller.on('facebook_postback', function(bot, message) {
+
+    bot.reply(message, 'Great Choice!!!! (' + message.payload + ')');
+
 });
+
+// controller.on(['Take a survey'],'message_received', function(bot, message) {
+//   getProfile(incoming.user, function(err, user) {
+//     question001(incoming, user)
+//   });
+// });
 function question001(incoming, user){
   bot.reply(incoming, {
       text: `Awesome, lets get started. First off, how often do you eat chicken?`,
