@@ -72,8 +72,18 @@ function userValidation(user) {
 		});
 	});
 }
+function custom_hear_middleware(patterns, message) {
 
-controller.hears(['hi', 'Hi'], 'message_received', function(bot, incoming) {
+    for (var p = 0; p < patterns.length; p++) {
+        if (patterns[p] == message.text) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+controller.hears(['hi', 'Hi'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     welcomeUser(incoming, user)
     saveUserToMongoDb(`${incoming.user}`,`${user.first_name}`, `${user.last_name}`, `${user.gender}`, `${user.locale}`, `${user.timezone}`)
@@ -97,11 +107,13 @@ function welcomeUser(incoming, user) {
   });
 }
 controller.on('message_received', function(bot, incoming) {
-  console.log("GOT HERE!")
   getProfile(incoming.user, function(err, user) {
     if (incoming.quick_reply.payload === "Take a survey") {
       question001(incoming, user)
-      console.log("ALSO MADE IT HERE!")
+
+    } else if (incoming.quick_reply.payload === "Once and a while"){
+      question002(incoming, user)
+
     }
   });
 });
@@ -131,6 +143,35 @@ function question001(incoming, user){
           },
       ]
   });
+  // startRemindUserCounter(incoming)
+}
+function question002(incoming, user){
+  bot.reply(incoming, {
+      text: `Great! Next question... When you shop for chicken at the grocery store what is most important to you?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Value",
+              "payload": "Value",
+          },
+          {
+              "content_type": "text",
+              "title": "Quality",
+              "payload": "Quality",
+          },
+          {
+              "content_type": "text",
+              "title": "Fair treatment of animals",
+              "payload": "Fair treatment of animals",
+          },
+          {
+              "content_type": "text",
+              "title": "Freshness",
+              "payload": "Freshness",
+          },
+      ]
+  });
+	// endRemindUserCounter()
   // startRemindUserCounter(incoming)
 }
 
