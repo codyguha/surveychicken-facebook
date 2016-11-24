@@ -641,34 +641,7 @@ function question011(incoming, user){
     type:"image",
     payload:{
       url:"https://raw.githubusercontent.com/codyguha/survey-images/master/kikfriedchicken/FriedCH_burger.jpg"
-    },
-    quick_replies: [
-          {
-              "content_type": "text",
-              "title": "1) This looks gross",
-              "payload": "response_11",
-          },
-          {
-              "content_type": "text",
-              "title": "2) Not my first choice",
-              "payload": "response_11",
-          },
-          {
-              "content_type": "text",
-              "title": "3) I’m on the fence",
-              "payload": "response_11",
-          },
-          {
-              "content_type": "text",
-              "title": "4) This looks eatable",
-              "payload": "response_11",
-          },
-          {
-              "content_type": "text",
-              "title": "5) This looks delicious",
-              "payload": "response_11",
-          }
-      ]
+    }
   });
 
 	// endRemindUserCounter()
