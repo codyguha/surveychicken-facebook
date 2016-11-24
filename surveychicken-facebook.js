@@ -60,6 +60,20 @@ function saveUserToMongoDb(id, first_name, last_name, gender, locale, timezone) 
 		})
 	})
 }
+function saveToMongoDb(id, value, key) {
+	mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
+		if (err) throw err;
+		var results = db.collection('results');
+		var target_key = "chicken_survey." + key
+		var target = {};
+		target[target_key] = value
+		results.update({
+			"user.id": `${id}`
+		}, {
+			$set: target
+		});
+	});
+}
 function userValidation(user) {
 	mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
 		var results = db.collection('results');
@@ -107,13 +121,14 @@ function welcomeUser(incoming, user) {
   });
 }
 controller.on('message_received', function(bot, incoming) {
+  var payload = incoming.quick_reply.payload
+  var text = incoming.text
   getProfile(incoming.user, function(err, user) {
-    if (incoming.quick_reply.payload === "Take a survey") {
+    if (payload === "Take a survey") {
       question001(incoming, user)
-
-    } else if (incoming.quick_reply.payload === "Once and a while"){
+    } else if (payload === "response_02"){
       question002(incoming, user)
-
+      saveToMongoDb(incoming.user, text, "frequency")
     }
   });
 });
@@ -152,22 +167,22 @@ function question002(incoming, user){
           {
               "content_type": "text",
               "title": "Value",
-              "payload": "Value",
+              "payload": "response_02",
           },
           {
               "content_type": "text",
               "title": "Quality",
-              "payload": "Quality",
+              "payload": "response_02",
           },
           {
               "content_type": "text",
               "title": "Fair treatment of animals",
-              "payload": "Fair treatment of animals",
+              "payload": "response_02",
           },
           {
               "content_type": "text",
               "title": "Freshness",
-              "payload": "Freshness",
+              "payload": "response_02",
           },
       ]
   });
