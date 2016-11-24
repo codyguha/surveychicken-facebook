@@ -96,7 +96,7 @@ function welcomeUser(incoming, user) {
       ]
   });
 }
-controller.on('quick_reply', function(bot, message) {
+controller.on('user_message', function(bot, message) {
   getProfile(incoming.user, function(err, user) {
     if (message.quick_reply.payload === "Take a survey") {
       question001(incoming, user)
