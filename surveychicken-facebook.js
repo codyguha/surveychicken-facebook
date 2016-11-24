@@ -182,6 +182,26 @@ controller.on('message_received', function(bot, incoming) {
     } else if (payload === "response_10") {
       question010end(incoming, user)
       saveToMongoDb(id, text, "relationship_detail")
+    } else if (payload === "response_11") {
+      question012(incoming, user)
+      saveToMongoDb(id, text, "chk_burger")
+    } else if (payload === "response_12") {
+      question013(incoming, user)
+      saveToMongoDb(id, text, "chk_cake")
+    } else if (payload === "response_13") {
+      question014(incoming, user)
+      saveToMongoDb(id, text, "chk_cone")
+    } else if (payload === "response_14") {
+      question015(incoming, user)
+      saveToMongoDb(id, text, "chk_dog")
+    } else if (payload === "response_15") {
+      saveToMongoDb(id, text, "hunger")
+      if (text === "Yes") {
+        suggestChicken(incoming, user)
+      } else {
+      }
+    } else if (payload === "get_chicken") {
+      getChicken(incoming, user)
     }
   });
 });
@@ -635,7 +655,7 @@ function question010end(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question011(incoming, user){
-  progress = 8
+  progress = 11
   bot.reply(incoming, {
     attachment:{
     type:"image",
@@ -646,27 +666,27 @@ function question011(incoming, user){
     quick_replies: [
           {
               "content_type": "text",
-              "title": "1) This looks gross",
+              "title": "This looks gross",
               "payload": "response_11",
           },
           {
               "content_type": "text",
-              "title": "2) Not my first choice",
+              "title": "Not my first choice",
               "payload": "response_11",
           },
           {
               "content_type": "text",
-              "title": "3) I’m on the fence",
+              "title": "I’m on the fence",
               "payload": "response_11",
           },
           {
               "content_type": "text",
-              "title": "4) This looks eatable",
+              "title": "This looks eatable",
               "payload": "response_11",
           },
           {
               "content_type": "text",
-              "title": "5) This looks delicious",
+              "title": "This looks delicious",
               "payload": "response_11",
           }
       ]
@@ -674,6 +694,200 @@ function question011(incoming, user){
 
 	// endRemindUserCounter()
   // startRemindUserCounter(incoming)
+}
+function question012(incoming, user){
+  progress = 12
+  bot.reply(incoming, {
+    attachment:{
+    type:"image",
+    payload:{
+      url:"https://raw.githubusercontent.com/codyguha/survey-images/master/kikfriedchicken/FriedCH_cake.jpg"
+      }
+    },
+    quick_replies: [
+          {
+              "content_type": "text",
+              "title": "This looks gross",
+              "payload": "response_12",
+          },
+          {
+              "content_type": "text",
+              "title": "Not my first choice",
+              "payload": "response_12",
+          },
+          {
+              "content_type": "text",
+              "title": "I’m on the fence",
+              "payload": "response_12",
+          },
+          {
+              "content_type": "text",
+              "title": "This looks eatable",
+              "payload": "response_12",
+          },
+          {
+              "content_type": "text",
+              "title": "This looks delicious",
+              "payload": "response_12",
+          }
+      ]
+  });
+
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question013(incoming, user){
+  progress = 13
+  bot.reply(incoming, {
+    attachment:{
+    type:"image",
+    payload:{
+      url:"https://raw.githubusercontent.com/codyguha/survey-images/master/kikfriedchicken/FriedCH_cone.jpg"
+      }
+    },
+    quick_replies: [
+          {
+              "content_type": "text",
+              "title": "This looks gross",
+              "payload": "response_13",
+          },
+          {
+              "content_type": "text",
+              "title": "Not my first choice",
+              "payload": "response_13",
+          },
+          {
+              "content_type": "text",
+              "title": "I’m on the fence",
+              "payload": "response_13",
+          },
+          {
+              "content_type": "text",
+              "title": "This looks eatable",
+              "payload": "response_13",
+          },
+          {
+              "content_type": "text",
+              "title": "This looks delicious",
+              "payload": "response_13",
+          }
+      ]
+  });
+
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question014(incoming, user){
+  progress = 14
+  bot.reply(incoming, {
+    attachment:{
+    type:"image",
+    payload:{
+      url:"https://raw.githubusercontent.com/codyguha/survey-images/master/kikfriedchicken/FriedCH_dog.jpg"
+      }
+    },
+    quick_replies: [
+          {
+              "content_type": "text",
+              "title": "This looks gross",
+              "payload": "response_14",
+          },
+          {
+              "content_type": "text",
+              "title": "Not my first choice",
+              "payload": "response_14",
+          },
+          {
+              "content_type": "text",
+              "title": "I’m on the fence",
+              "payload": "response_14",
+          },
+          {
+              "content_type": "text",
+              "title": "This looks eatable",
+              "payload": "response_14",
+          },
+          {
+              "content_type": "text",
+              "title": "This looks delicious",
+              "payload": "response_14",
+          }
+      ]
+  });
+
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question015(incoming, user){
+  progress = 15
+  bot.reply(incoming, {
+      text: `Has this survey made you hungry?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Yes",
+              "payload": "response_15",
+          },
+          {
+              "content_type": "text",
+              "title": "Not really",
+              "payload": "response_15",
+          }
+      ]
+  });
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function suggestChicken(incoming, user){
+  progress = 15
+  bot.reply(incoming, {
+      text: `Ok would you like me to suggest some local take out options?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Yes please",
+              "payload": "get_chicken",
+          },
+          {
+              "content_type": "text",
+              "title": "No thanks",
+              "payload": "No thanks",
+          }
+      ]
+  });
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function getChicken(incoming, user){
+  var message = "message":{
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "title":"Welcome to Peter\'s Hats",
+            "item_url":"https://petersfancybrownhats.com",
+            "image_url":"https://petersfancybrownhats.com/company_image.png",
+            "subtitle":"We\'ve got the right hat for everyone.",
+            "buttons":[
+              {
+                "type":"web_url",
+                "url":"https://petersfancybrownhats.com",
+                "title":"View Website"
+              },
+              {
+                "type":"postback",
+                "title":"Start Chatting",
+                "payload":"DEVELOPER_DEFINED_PAYLOAD"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+  bot.reply(incoming, message);
 }
 controller.hears(['what can I do here?'], 'message_received', function(bot, message) {
     bot.reply(message, "You can complete surveys with me to help me complete my research!");
@@ -711,10 +925,16 @@ function checkProgress(incoming, user){
 		question009(incoming, user)
 	} else if (progress === 8) {
 		question010end(incoming, user)
-	} else if (progress === 10) {
-    questionLast(incoming, user)
-  } else if (progress === 15) {
-		questionLast(incoming, user)
+	} else if (progress === 11) {
+		question011(incoming, user)
+	} else if (progress === 12) {
+		question012(incoming, user)
+	} else if (progress === 13) {
+		question013(incoming, user)
+	} else if (progress === 14) {
+		question014(incoming, user)
+	} else if (progress === 15) {
+		question015(incoming, user)
 	} else if (progress === 16) {
     getContact(incoming, user)
   }
