@@ -96,10 +96,12 @@ function welcomeUser(incoming, user) {
       ]
   });
 }
-controller.on('user_message', function(bot, message) {
+controller.on('message_received', function(bot, message) {
+  console.log("GOT HERE!")
   getProfile(incoming.user, function(err, user) {
     if (message.quick_reply.payload === "Take a survey") {
       question001(incoming, user)
+      console.log("ALSO MADE IT HERE!")
     }
   });
 });
