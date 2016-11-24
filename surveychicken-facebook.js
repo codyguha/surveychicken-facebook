@@ -11,6 +11,8 @@ var controller = Botkit.facebookbot({
 var bot = controller.spawn({
 });
 
+var progress;
+
 controller.setupWebserver(process.env.PORT || 3000, function(err, webserver) {
     controller.createWebhookEndpoints(webserver, bot, function() {
         console.log('ONLINE!');
@@ -101,6 +103,11 @@ controller.hears(['hi', 'Hi'], 'message_received',custom_hear_middleware, functi
     welcomeUser(incoming, user)
   });
 });
+controller.hears(['Continue'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  getProfile(incoming.user, function(err, user) {
+    checkProgress(incoming, user)
+  });
+});
 function welcomeUser(incoming, user) {
   userValidation(incoming.user, user);
   bot.reply(incoming, {
@@ -120,6 +127,7 @@ function welcomeUser(incoming, user) {
   });
 }
 controller.on('message_received', function(bot, incoming) {
+  var id = incoming.user
   var payload = incoming.quick_reply.payload
   var text = incoming.text
   getProfile(incoming.user, function(err, user) {
@@ -127,11 +135,53 @@ controller.on('message_received', function(bot, incoming) {
       question001(incoming, user)
     } else if (payload === "response_01"){
       question002(incoming, user)
-      saveToMongoDb(incoming.user, text, "frequency")
+      saveToMongoDb(id, text, "frequency")
+    } else if (payload === "response_02"){
+      question003(incoming, user)
+      saveToMongoDb(id, text, "buy_based_on")
+    } else if (payload === "response_03"){
+      question004(incoming, user)
+      saveToMongoDb(id, text, "favorite_preparation")
+    } else if (payload === "response_04"){
+      saveToMongoDb(id, text, "side_dish")
+      if (text === "Potatoes") {
+        question005Potatoes(incoming, user)
+      } else if (text === "Rice") {
+        question005Rice(incoming, user)
+      } else if (text === "Salad") {
+        question005Salad(incoming, user)
+      } else if (text === "Vegetables") {
+        question005Vegetables(incoming, user)
+      }
+    } else if (payload === "response_05") {
+      question006(incoming, user)
+      saveToMongoDb(id, text, "side_dish_detail")
+    } else if (payload === "response_06") {
+      question007(incoming, user)
+      saveToMongoDb(id, text, "location_preference")
+    } else if (payload === "response_07") {
+      question008(incoming, user)
+      saveToMongoDb(id, text, "backup_option")
+    } else if (payload === "response_09") {
+      if (text === "I love it") {
+        saveToMongoDb(id, text, "relationship")
+        saveToMongoDb(id, text, "relationship_detail")
+        question010end(incoming, user)
+      } else if (text === "It's a guilty pleasure") {
+        saveToMongoDb(id, text, "relationship")
+        question010a(incoming, user)
+      } else if (text === "Not really my thing" || text === "I’ll die before I eat fried chicken") {
+        saveToMongoDb(id, text, "relationship")
+        question010b(incoming, user)
+      }
+    } else if (payload === "response_10") {
+      question010end(incoming, user)
+      saveToMongoDb(id, text, "relationship_detail")
     }
   });
 });
 function question001(incoming, user){
+  progress = 1
   bot.reply(incoming, {
       text: `Awesome, lets get started. First off, how often do you eat chicken?`,
       quick_replies: [
@@ -154,12 +204,13 @@ function question001(incoming, user){
               "content_type": "text",
               "title": "Never",
               "payload": "response_01",
-          },
+          }
       ]
   });
   // startRemindUserCounter(incoming)
 }
 function question002(incoming, user){
+  progress = 2
   bot.reply(incoming, {
       text: `Great! Next question... When you shop for chicken at the grocery store what is most important to you?`,
       quick_replies: [
@@ -182,13 +233,402 @@ function question002(incoming, user){
               "content_type": "text",
               "title": "Freshness",
               "payload": "response_02",
+          }
+      ]
+  });
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question003(incoming, user){
+  progress = 3
+  bot.reply(incoming, {
+      text: `What is your favorite way to prepare chicken at home?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Pan fry it",
+              "payload": "response_03",
+          },
+          {
+              "content_type": "text",
+              "title": "Deep fry it",
+              "payload": "response_03",
+          },
+          {
+              "content_type": "text",
+              "title": "Bake it",
+              "payload": "response_03",
+          },
+          {
+              "content_type": "text",
+              "title": "BBQ it",
+              "payload": "response_03",
+          },
+          {
+              "content_type": "text",
+              "title": "Roast it",
+              "payload": "response_03",
+          },
+          {
+              "content_type": "text",
+              "title": "Other",
+              "payload": "response_03",
+          }
+      ]
+  });
+
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question004(incoming, user){
+  progress = 4
+  bot.reply(incoming, {
+      text: `What is your preferred side dish to have with chicken?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Potatoes",
+              "payload": "response_04",
+          },
+          {
+              "content_type": "text",
+              "title": "Salad",
+              "payload": "response_04",
+          },
+          {
+              "content_type": "text",
+              "title": "Rice",
+              "payload": "response_04",
+          },
+          {
+              "content_type": "text",
+              "title": "Vegetables",
+              "payload": "response_04",
+          }
+      ]
+  });
+
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question005Potatoes(incoming, user){
+  progress = 4
+  bot.reply(incoming, {
+      text: `Yes! I love Potatoes too. How do you like your potatoes?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Mashed",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Roasted",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Fries",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Baked",
+              "payload": "response_05",
+          }
+      ]
+  });
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question005Rice(incoming, user){
+  progress = 4
+  bot.reply(incoming, {
+      text: `Rice is nice. What type of rice goes best with chicken?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Brown",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Basmati",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "White",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Flavoured - Coconut, etc",
+              "payload": "response_05",
+          }
+      ]
+  });
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question005Salad(incoming, user){
+  progress = 4
+  bot.reply(incoming, {
+      text: `Keeping it healthy with a salad, I like that. What type of salad goes best with chicken?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Greek",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Ceaser",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Green",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Coleslaw",
+              "payload": "response_05",
+          }
+      ]
+  });
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question005Vegetables(incoming, user){
+  progress = 4
+  bot.reply(incoming, {
+      text: `Gotta get those vegetables in. What vegetable goes best with chicken?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Broccoli",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Carrots",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Spinach",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Green Beans",
+              "payload": "response_05",
+          },
+          {
+              "content_type": "text",
+              "title": "Asparagus",
+              "payload": "response_05",
+          }
+      ]
+  });
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question006(incoming, user){
+  progress = 5
+  bot.reply(incoming, {
+      text: `Where do you most typically consume chicken outside of your home?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "At a family style restaurant",
+              "payload": "response_06",
+          },
+          {
+              "content_type": "text",
+              "title": "At fast food establishment",
+              "payload": "response_06",
+          },
+          {
+              "content_type": "text",
+              "title": "At a fine dining restaurant",
+              "payload": "response_06",
+          },
+          {
+              "content_type": "text",
+              "title": "At a grocery or convienience store",
+              "payload": "response_06",
+          }
+      ]
+  });
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question007(incoming, user){
+  progress = 6
+  bot.reply(incoming, {
+      text: `If a preferred chicken option is not available which of the following would you typically choose?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Beef",
+              "payload": "response_07",
+          },
+          {
+              "content_type": "text",
+              "title": "Seafood",
+              "payload": "response_07",
+          },
+          {
+              "content_type": "text",
+              "title": "Pork",
+              "payload": "response_07",
+          },
+          {
+              "content_type": "text",
+              "title": "Vegetarian option",
+              "payload": "response_07",
+          }
+      ]
+  });
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question008(incoming, user){
+  progress = 7
+  bot.reply(incoming, {
+      text: `Thanks for your input so far.  Are you ok to continue and answer a couple more questions?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Continue",
+              "payload": "Continue",
+          },
+          {
+              "content_type": "text",
+              "title": "Maybe later",
+              "payload": "Maybe later",
+          }
+      ]
+  });
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question009(incoming, user){
+  progress = 7
+  bot.reply(incoming, {
+      text: `You're awesome. Let’s get specific. What is your relationship with fried chicken?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "I love it",
+              "payload": "response_09",
+          },
+          {
+              "content_type": "text",
+              "title": "It's a guilty pleasure",
+              "payload": "response_09",
+          },
+          {
+              "content_type": "text",
+              "title": "Not really my thing",
+              "payload": "response_09",
+          },
+          {
+              "content_type": "text",
+              "title": "I’ll die before I eat fried chicken",
+              "payload": "response_09",
           },
       ]
   });
 	// endRemindUserCounter()
   // startRemindUserCounter(incoming)
 }
+function question010a(incoming, user){
+  progress = 7
+  bot.reply(incoming, {
+      text: `Guilty pleasure you say, tell me more.`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "After a night of hard partying",
+              "payload": "response_10",
+          },
+          {
+              "content_type": "text",
+              "title": "A treat if I’ve been eating good for a while",
+              "payload": "response_10",
+          },
+          {
+              "content_type": "text",
+              "title": "It’s a personal matter",
+              "payload": "response_10",
+          }
+      ]
+  });
 
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question010b(incoming, user){
+  progress = 7
+  bot.reply(incoming, {
+      text: `So fried chicken isnt on your menu. Can you tell me more?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "I’m trying to eat healthy these days",
+              "payload": "response_10",
+          },
+          {
+              "content_type": "text",
+              "title": "It's not convienient to make at home",
+              "payload": "response_10",
+          },
+          {
+              "content_type": "text",
+              "title": "It's not convienient to purchase",
+              "payload": "response_10",
+          },
+          {
+              "content_type": "text",
+              "title": "I just dont like the taste",
+              "payload": "response_10",
+          },
+          {
+              "content_type": "text",
+              "title": "I’m not going to get into it",
+              "payload": "response_10",
+          }
+      ]
+  });
+
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function question010end(incoming, user){
+  progress = 8
+  bot.reply(incoming, {
+      text: `Ok cool. In the next set of questions I’m going to show you some pictures of fried chicken entrees.  Use the answers provided to tell me what you think.`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Ok, lets do it",
+              "payload": "Ok, lets do it",
+          },
+          {
+              "content_type": "text",
+              "title": "NO WAY!",
+              "payload": "NO WAY!",
+          }
+      ]
+  });
+
+	// endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
 controller.hears(['what can I do here?'], 'message_received', function(bot, message) {
     bot.reply(message, "You can complete surveys with me to help me complete my research!");
 });
@@ -205,590 +645,31 @@ controller.on('message_received', function(bot, message) {
 //     bot.reply(message, "YOU CLICKED PLUGIN !!!");
 // });
 
-controller.on('facebook_postback', function(bot, message) {
-    getProfile(message.user, function(err, profile) {
-        if (message.payload === 'yes(chcken)') {
-            bot.reply(message, `Chicken you say ? Lets get started.`);
-            askRelationship(bot, message)
-        } else if (message.payload === 'I love it' || message.payload === 'I hate it' || message.payload === 'Guilty pleasure') {
-            saveToMongoDb(message.user, message.payload, "relationship")
-            askDetail(bot, message)
-        } else if (message.payload === 'I make it myself' || message.payload === 'KFC is my go to' || message.payload === 'Any way is good' || message.payload === 'Fried food is gross' || message.payload === `I don't eat animals` || message.payload === `It's a secret` || message.payload === `reward` ||message.payload === `cures hangover`) {
-            saveToMongoDb(message.user, message.payload, "detail")
-            askMood(bot, message)
-        } else if (message.payload === 'Chicken Parmesan' || message.payload === 'Double Down' || message.payload === 'Fried Drumsticks' || message.payload === 'Chicken Nuggets' || message.payload === 'Veggies') {
-            saveToMongoDb(message.user, message.payload, "preference")
-            askHungry(bot, message)
-        } else if (message.payload === 'yes' || message.payload === 'no' || message.payload === 'no(survey)') {
-            saveToMongoDb(message.user, message.payload, "hungry")
-            sayThanks(bot, message)
-        } else if (message.payload === 'yes(cndval)') {
-            canadianValuesSurvey(bot, message);
-        } else if (message.payload === `get started canadian`) {
-            startSurvey(bot, message)
-            // cndValQ01(bot, message);
-        } else if (message.payload === `q01_r01` || message.payload === `q01_r02`) {
-            if (message.payload === `q01_r01`){
-                saveToMongoDb(message.user, 1, "q01")
-            } else {
-                saveToMongoDb(message.user, 2, "q01")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q02_r01` || message.payload === `q02_r02`) {
-            if (message.payload === `q02_r01`){
-                saveToMongoDb(message.user, 1, "q02")
-            } else {
-                saveToMongoDb(message.user, 2, "q02")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q03_r01` || message.payload === `q03_r02`) {
-            if (message.payload === `q03_r01`){
-                saveToMongoDb(message.user, 1, "q03")
-            } else {
-                saveToMongoDb(message.user, 2, "q03")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q04_r01` || message.payload === `q04_r02`) {
-            if (message.payload === `q04_r01`){
-                saveToMongoDb(message.user, 1, "q04")
-            } else {
-                saveToMongoDb(message.user, 2, "q04")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q05_r01` || message.payload === `q05_r02`) {
-            if (message.payload === `q05_r01`){
-                saveToMongoDb(message.user, 1, "q05")
-            } else {
-                saveToMongoDb(message.user, 2, "q05")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q06_r01` || message.payload === `q06_r02`) {
-            if (message.payload === `q06_r01`){
-                saveToMongoDb(message.user, 1, "q06")
-            } else {
-                saveToMongoDb(message.user, 2, "q06")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q07_r01` || message.payload === `q07_r02`) {
-            if (message.payload === `q07_r01`){
-                saveToMongoDb(message.user, 1, "q07")
-            } else {
-                saveToMongoDb(message.user, 2, "q07")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q08_r01` || message.payload === `q08_r02`) {
-            if (message.payload === `q08_r01`){
-                saveToMongoDb(message.user, 1, "q08")
-            } else {
-                saveToMongoDb(message.user, 2, "q08")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q09_r01` || message.payload === `q09_r02`) {
-            if (message.payload === `q09_r01`){
-                saveToMongoDb(message.user, 1, "q09")
-            } else {
-                saveToMongoDb(message.user, 2, "q09")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q10_r01` || message.payload === `q10_r02`) {
-            if (message.payload === `q10_r01`){
-                saveToMongoDb(message.user, 1, "q10")
-            } else {
-                saveToMongoDb(message.user, 2, "q10")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q11_r01` || message.payload === `q11_r02`) {
-            if (message.payload === `q11_r01`){
-                saveToMongoDb(message.user, 1, "q11")
-            } else {
-                saveToMongoDb(message.user, 2, "q11")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q12_r01` || message.payload === `q12_r02`) {
-            if (message.payload === `q12_r01`){
-                saveToMongoDb(message.user, 1, "q12")
-            } else {
-                saveToMongoDb(message.user, 2, "q12")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q13_r01` || message.payload === `q13_r02`) {
-            if (message.payload === `q13_r01`){
-                saveToMongoDb(message.user, 1, "q13")
-            } else {
-                saveToMongoDb(message.user, 2, "q13")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q14_r01` || message.payload === `q14_r02`) {
-            if (message.payload === `q14_r01`){
-                saveToMongoDb(message.user, 1, "q14")
-            } else {
-                saveToMongoDb(message.user, 2, "q14")
-            }
-            nextQuestion(bot, message);
-        } else if (message.payload === `q15_r01` || message.payload === `q15_r02`) {
-            if (message.payload === `q15_r01`){
-                saveToMongoDb(message.user, 1, "q15")
-            } else {
-                saveToMongoDb(message.user, 2, "q15")
-            }
-            cndValEnd(bot, message);
-        }
-    });
-});
-
-canadianValuesSurvey = function(bot, message) {
-    var attachment = {
-        'type':'template',
-        'payload':{
-            'template_type':'button',
-            'text': `The Angus Reid Institute's national poll conducted in partnership with the CBC identifies five Canadian mindsets when it comes to values.  Your answers will determine with which of the five mindsets you are most aligned.`,
-            'buttons':[
-                {
-                'type':'postback',
-                'title':`Get Started`,
-                'payload':`get started canadian`
-                },
-                {
-                'type':'postback',
-                'title':`No Thanks`,
-                'payload':`no`
-                }
-            ]
-        }
-    };
-
-    bot.reply(message, {
-        attachment: attachment,
-    });
-}
-
-//QUESTIONS
-
-askRelationship = function(bot, message) {
-    var attachment = {
-        'type':'template',
-        'payload':{
-            'template_type':'button',
-            'text':  'What would you say your relationship is with fried chicken ?',
-            'buttons':[
-                {
-                'type':'postback',
-                'title':'I love it',
-                'payload':'I love it'
-                },
-                {
-                'type':'postback',
-                'title':'I hate it',
-                'payload':'I hate it'
-                },
-                {
-                'type':'postback',
-                'title':'Guilty pleasure',
-                'payload':'Guilty pleasure'
-                }
-            ]
-        }
-    };
-
-    bot.reply(message, {
-        attachment: attachment,
-    });
-}
-
-askDetail = function(bot, message) {
-    if (message.payload === 'I love it') {
-        var attachment = {
-            'type':'template',
-            'payload':{
-                'template_type':'button',
-                'text': 'What is your favourite way to eat fried chicken ?',
-                'buttons':[
-                    {
-                    'type':'postback',
-                    'title':'I make it myself',
-                    'payload':'I make it myself'
-                    },
-                    {
-                    'type':'postback',
-                    'title':'KFC is my go to',
-                    'payload':'KFC is my go to'
-                    },
-                    {
-                    'type':'postback',
-                    'title':'Any way is good',
-                    'payload':'Any way is good'
-                    }
-                ]
-            }
-        };
-
-        bot.reply(message, {
-            attachment: attachment,
-        });
-
-    } else if (message.payload === 'I hate it') {
-        var attachment = {
-            'type':'template',
-            'payload':{
-                'template_type':'button',
-                'text': 'Not a fan ? tell me more.',
-                'buttons':[
-                    {
-                    'type':'postback',
-                    'title':'Fried food is gross',
-                    'payload':'Fried food is gross'
-                    },
-                    {
-                    'type':'postback',
-                    'title':`I don't eat animals`,
-                    'payload':`I don't eat animals`
-                    },
-                    {
-                    'type':'postback',
-                    'title':`It's a secret`,
-                    'payload':`It's a secret`
-                    }
-                ]
-            }
-        };
-
-        bot.reply(message, {
-            attachment: attachment,
-        });
-
-    } else if (message.payload == 'Guilty pleasure') {
-        var attachment = {
-            'type':'template',
-            'payload':{
-                'template_type':'button',
-                'text':  'Guilty pleasure you say, tell me more.',
-                'buttons':[
-                    {
-                    'type':'postback',
-                    'title':'When Hungover',
-                    'payload':'cures hangover'
-                    },
-                    {
-                    'type':'postback',
-                    'title':'Reward for myself',
-                    'payload':'reward'
-                    },
-                    {
-                    'type':'postback',
-                    'title':`It's a secret`,
-                    'payload':`It's a secret`
-                    }
-                ]
-            }
-        };
-
-        bot.reply(message, {
-            attachment: attachment,
-        });
-
-    } else  {
-        bot.reply(message, 'oops')
-    }
-
-}
-
-askMood = function(bot, message) {
-     bot.startConversation(message, function(err, convo) {
-        convo.ask('What is your current mood ? (please respond with emoticon)', function(response, convo) {
-            convo.next();
-        });
-        convo.on('end', function(convo) {
-            if (convo.status == 'completed') {
-                bot.reply(message, "thanks got it !");
-                saveToMongoDb(message.user, message.text, "mood")
-                setTimeout(function(){
-                    askPreference(bot, message);
-                }, 1000);
-            }
-        });
-     });
-}
-
-askPreference = function(bot, message) {
-    var attachment = {
-        'type':'template',
-        'payload': {
-                'template_type': 'generic',
-                'elements': [
-                    {
-                        'title': 'Chicken Parmesan',
-                        'image_url': 'http://fiber-international.com/wp-content/uploads/2015/04/800x600-chicken.jpg',
-                        'buttons': [
-                            {
-                                'type': 'postback',
-                                'title': 'Chicken Parmesan',
-                                'payload': 'Chicken Parmesan'
-                            }
-                        ]
-                    },
-                    {
-                        'title': 'Double Down',
-                        'image_url': 'http://assets.bwbx.io/images/ieMg5BCeWkWU/v1/-1x-1.jpg',
-                        'buttons': [
-                            {
-                                'type': 'postback',
-                                'title': 'Double Down',
-                                'payload': 'Double Down'
-                            }
-                        ]
-                    },
-                    {
-                        'title': 'Fried Drumsticks',
-                        'image_url': 'https://i.ytimg.com/vi/G8hbFO-r2nQ/maxresdefault.jpg',
-                        'buttons': [
-                            {
-                                'type': 'postback',
-                                'title': 'Fried Drumsticks',
-                                'payload': 'Fried Drumsticks'
-                            }
-                        ]
-                    },
-                    {
-                        'title': 'Chicken Nuggets',
-                        'image_url': 'http://www.urbanmommies.com/wp-content/uploads/McDonalds-Chicken-Nuggets.jpg',
-                        'buttons': [
-                            {
-                                'type': 'postback',
-                                'title': 'Chicken Nuggets',
-                                'payload': 'Chicken Nuggets'
-                            }
-                        ]
-                    },
-                    {
-                        'title': 'Veggies',
-                        'image_url': 'http://www.stevensonfitness.com/wp-content/uploads/2014/10/veggies.jpg',
-                        'buttons': [
-                            {
-                                'type': 'postback',
-                                'title': 'Veggies',
-                                'payload': 'Veggies'
-                            }
-                        ]
-                    }
-                ]
-            }
-    };
-
-    bot.reply(message, {
-        attachment: attachment,
-    });
-
-    bot.reply(message, 'Which of these meals your you like to be eating right now ?');
-}
-
-askHungry = function(bot, message) {
-    var attachment = {
-        'type':'template',
-        'payload':{
-            'template_type':'button',
-            'text': 'Have I made you hungry ?',
-            'buttons':[
-                {
-                'type':'postback',
-                'title':`yes`,
-                'payload':`yes`
-                },
-                {
-                'type':'postback',
-                'title':`no`,
-                'payload':`no`
-                }
-            ]
-        }
-    };
-
-    bot.reply(message, {
-        attachment: attachment,
-    });
-
-}
-// OTHER RESPONSES
-sayThanks = function(bot, message) {
-  bot.reply(message, 'OK! thanks for your time');
-}
-
-// CANADIAN VALUES
-startSurvey = function(bot, message) {
-    survey_step = 0
-    var first_question = SURVEY[survey_step];
-    survey_step++
-    cndValQuestion(bot, message, first_question)
-}
-
-nextQuestion = function(bot, message) {
-    if (survey_step <= 14 ) {
-        cndValQuestion(bot, message, SURVEY[survey_step])
-        survey_step++
-    } else {
-        cndValEnd(bot, message)
-        survey_step = 0
-    }
-}
-
-cndValQuestion = function(bot, message, question) {
-    bot.reply(message, question.text);
-    var attachment = {
-        'type':'template',
-        'payload': {
-                'template_type': 'generic',
-                'elements': [
-                    {
-                        'title': `Option 1`,
-                        'image_url': question.img_01,
-                        'subtitle': question.r_01,
-                        'buttons': [
-                            {
-                                'type': 'postback',
-                                'title': 'Select',
-                                'payload': question.pl_code_01
-                            }
-                        ]
-                    },
-                    {
-                        'title': `Option 2`,
-                        'image_url': question.img_02,
-                        'subtitle': question.r_02,
-                        'buttons': [
-                            {
-                                'type': 'postback',
-                                'title': 'Select',
-                                'payload': question.pl_code_02
-                            }
-                        ]
-                    }
-                ]
-            }
-    };
-    bot.reply(message, {
-        attachment: attachment,
-    });
-}
-
-cndValEnd = function (bot, message) {
-    mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
-        if (err) throw err;
-    var results = db.collection('results');
-    results.find({
-          _id: message.user
-        }).toArray(function(err, found) {
-          var userresults = found[0].canadian_values_survey;
-          console.log(userresults)
-            var segCS = Math.exp(
-            1.324777341 * userresults.q01 +
-            -0.439317293 * userresults.q02 +
-            -1.141955791 * userresults.q03 +
-            0.946527238 * userresults.q04 +
-            1.065909437 * userresults.q05 +
-            1.856962384 * userresults.q06 +
-            0.313054006 * userresults.q07 +
-            0.335923336 * userresults.q08 +
-            -0.822735827 * userresults.q09 +
-            1.418703947 * userresults.q10 +
-            -0.705176968 * userresults.q11 +
-            -1.339674474 * userresults.q12 +
-            0.990574065 * userresults.q13 +
-            3.17706193 * userresults.q14 +
-            -3.538568365 * userresults.q15 +
-            -3.687443765);
-
-          var segPR = Math.exp(
-            0.360924702 * userresults.q01 +
-            -4.778865322 * userresults.q02 +
-            -0.096688666 * userresults.q03 +
-            1.556509672 * userresults.q04 +
-            2.000184421 * userresults.q05 +
-            0.052231303 * userresults.q06 +
-            -1.892051762 * userresults.q07 +
-            0.873597825 * userresults.q08 +
-            -1.024131769 * userresults.q09 +
-            1.058972973 * userresults.q10 +
-            1.387828058 * userresults.q11 +
-            -1.645821049 * userresults.q12 +
-            4.147904236 * userresults.q13 +
-            2.471886731 * userresults.q14 +
-            -1.551020565 * userresults.q15 +
-            -3.344123223);
-
-          var segFBT = Math.exp(
-            1.937264942 * userresults.q01 +
-            -2.782925459 * userresults.q02 +
-            2.014814213 * userresults.q03 +
-            1.738605214 * userresults.q04 +
-            0.59702853 * userresults.q05 +
-            0.847449727 * userresults.q06 +
-            -0.706492853 * userresults.q07 +
-            1.961100828 * userresults.q08 +
-            -1.677824254 * userresults.q09 +
-            1.768624728 * userresults.q10 +
-            3.445928658 * userresults.q11 +
-            -0.138628647 * userresults.q12 +
-            0.746561782 * userresults.q13 +
-            1.871286665 * userresults.q14 +
-            -2.419686983 * userresults.q15 +
-            -11.1287024);
-
-          var segFEE = Math.exp(
-            1.029244103 * userresults.q01 +
-            -1.496981598 * userresults.q02 +
-            -1.196622034 * userresults.q03 +
-            2.94630191 * userresults.q04 +
-            -0.551662564 * userresults.q05 +
-            1.775545107 * userresults.q06 +
-            1.01564184 * userresults.q07 +
-            1.850206979 * userresults.q08 +
-            -2.918294699 * userresults.q09 +
-            2.858187827 * userresults.q10 +
-            -0.233789783 * userresults.q11 +
-            0.454961524 * userresults.q12 +
-            2.491671372 * userresults.q13 +
-            0.997044403 * userresults.q14 +
-            -1.273910456 * userresults.q15 +
-            -10.76338147);
-        switch (Math.max(segCS, segPR, segFBT, segFEE, 1)) {
-            case segCS:
-                cndValEndCS(bot, message)
-              break;
-            case segPR:
-                cndValEndPR(bot, message)
-              break;
-            case segFBT:
-                cndValEndFBT(bot, message)
-              break;
-            case segFEE:
-                cndValEndFEE(bot, message)
-              break;
-            case 1:
-                cndValEndPSP(bot, message)
-              break;
-            default:
-              break;
-          }
-      });
-    });
-}
-
-cndValEndCS = function (bot, message) {
-    bot.reply(message, `read more at http://angusreid.org/cautious-skeptics`);
-    bot.reply(message, `That's it ! You are a Cautious Skeptic!`);
-}
-cndValEndPR = function (bot, message) {
-    bot.reply(message, `read more at http://angusreid.org/permissive-reformers/`);
-    bot.reply(message, `That's it ! You are a Permissive Reformer!`);
-}
-cndValEndFBT = function (bot, message) {
-    bot.reply(message, `read more at http://angusreid.org/faith-based-traditionalists`);
-    bot.reply(message, `That's it ! You are a Faith Based Traditionalist!`);
-}
-cndValEndFEE = function (bot, message) {
-    bot.reply(message, `read more at http://angusreid.org/free-enterprise-enthusiasts`);
-    bot.reply(message, `That's it ! You are a Free Enterprise Enthusiast!`);
-}
-cndValEndPSP = function (bot, message) {
-    bot.reply(message, `read more at http://angusreid.org/public-sector-proponents`);
-    bot.reply(message, `That's it ! You are a Public Sector Proponent!`);
+function checkProgress(incoming, user){
+  console.log("checked progress outputs!!!:  " + progress)
+	if (progress === 0) {
+		question001(incoming, user)
+	} else if (progress === 1) {
+		question001(incoming, user)
+	} else if (progress === 2) {
+		question002(incoming, user)
+	} else if (progress === 3) {
+		question003(incoming, user)
+	} else if (progress === 4) {
+		question004(incoming, user)
+	} else if (progress === 5) {
+		question006(incoming, user)
+	} else if (progress === 6) {
+		question007(incoming, user)
+	} else if (progress === 7) {
+		question009(incoming, user)
+	} else if (progress === 8) {
+		question010end(incoming, user)
+	} else if (progress === 10) {
+    questionLast(incoming, user)
+  } else if (progress === 15) {
+		questionLast(incoming, user)
+	} else if (progress === 16) {
+    getContact(incoming, user)
+  }
 }
