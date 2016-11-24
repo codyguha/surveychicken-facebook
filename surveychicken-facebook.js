@@ -172,10 +172,10 @@ controller.on('message_received', function(bot, incoming) {
         saveToMongoDb(id, text, "relationship")
         saveToMongoDb(id, text, "relationship_detail")
         question010end(incoming, user)
-      } else if (text === "It's a guilty pleasure") {
+      } else if (text === "Guilty pleasure") {
         saveToMongoDb(id, text, "relationship")
         question010a(incoming, user)
-      } else if (text === "Not really my thing" || text === "I’ll die before I eat fried chicken") {
+      } else if (text === "Not really my thing" || text === "Never eat it") {
         saveToMongoDb(id, text, "relationship")
         question010b(incoming, user)
       }
@@ -251,7 +251,7 @@ function question002(incoming, user){
           },
           {
               "content_type": "text",
-              "title": "Fair treatment of animals",
+              "title": "Ethical farming",
               "payload": "response_02",
           },
           {
@@ -388,7 +388,7 @@ function question005Rice(incoming, user){
           },
           {
               "content_type": "text",
-              "title": "Flavoured - Coconut, etc",
+              "title": "Flavoured",
               "payload": "response_05",
           }
       ]
@@ -468,22 +468,22 @@ function question006(incoming, user){
       quick_replies: [
           {
               "content_type": "text",
-              "title": "At a family style restaurant",
+              "title": "Family restaurant",
               "payload": "response_06",
           },
           {
               "content_type": "text",
-              "title": "At fast food establishment",
+              "title": "Fast food",
               "payload": "response_06",
           },
           {
               "content_type": "text",
-              "title": "At a fine dining restaurant",
+              "title": "Fine dining",
               "payload": "response_06",
           },
           {
               "content_type": "text",
-              "title": "At a grocery or convienience store",
+              "title": "Convienience store",
               "payload": "response_06",
           }
       ]
@@ -553,7 +553,7 @@ function question009(incoming, user){
           },
           {
               "content_type": "text",
-              "title": "It's a guilty pleasure",
+              "title": "Guilty pleasure",
               "payload": "response_09",
           },
           {
@@ -563,7 +563,7 @@ function question009(incoming, user){
           },
           {
               "content_type": "text",
-              "title": "I’ll die before I eat fried chicken",
+              "title": "Never eat it",
               "payload": "response_09",
           },
       ]
@@ -578,17 +578,17 @@ function question010a(incoming, user){
       quick_replies: [
           {
               "content_type": "text",
-              "title": "After a night of hard partying",
+              "title": "When hungover",
               "payload": "response_10",
           },
           {
               "content_type": "text",
-              "title": "A treat if I’ve been eating good for a while",
+              "title": "A treat",
               "payload": "response_10",
           },
           {
               "content_type": "text",
-              "title": "It’s a personal matter",
+              "title": "Personal matter",
               "payload": "response_10",
           }
       ]
@@ -604,27 +604,27 @@ function question010b(incoming, user){
       quick_replies: [
           {
               "content_type": "text",
-              "title": "I’m trying to eat healthy these days",
+              "title": "I eat healthy",
               "payload": "response_10",
           },
           {
               "content_type": "text",
-              "title": "It's not convienient to make at home",
+              "title": "Hard to make at home",
               "payload": "response_10",
           },
           {
               "content_type": "text",
-              "title": "It's not convienient to purchase",
+              "title": "Too expensive",
               "payload": "response_10",
           },
           {
               "content_type": "text",
-              "title": "I just dont like the taste",
+              "title": "Don't like the taste",
               "payload": "response_10",
           },
           {
               "content_type": "text",
-              "title": "I’m not going to get into it",
+              "title": "Personal matter",
               "payload": "response_10",
           }
       ]
