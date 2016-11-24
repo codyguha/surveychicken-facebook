@@ -74,15 +74,12 @@ function userValidation(user) {
 }
 
 controller.hears(['hi', 'Hi'], 'message_received', function(bot, incoming) {
-  getProfile(incoming.user, function(err, profile) {
-    var user = profile
-    console.log(">>>>>>>>>HEARD: " + user.first_name)
+  getProfile(incoming.user, function(err, user) {
     welcomeUser(incoming, user)
     saveUserToMongoDb(`${incoming.user}`,`${user.first_name}`, `${user.last_name}`, `${user.gender}`, `${user.locale}`, `${user.timezone}`)
   });
 });
 function welcomeUser(incoming, user) {
-  console.log(">>>>>>>>>SENT: " + user.first_name)
   bot.reply(incoming, {
       text: `Hey ${user.first_name}! I’m the host here at Survey Chicken.  If you get lost, or if you want a fresh start just text “Hi” and I’ll take you back to the beginning. What would you like to do first?`,
       quick_replies: [
@@ -99,6 +96,40 @@ function welcomeUser(incoming, user) {
       ]
   });
 }
+controller.on(['Take a survey'],'facebook_postback', function(bot, message) {
+  getProfile(incoming.user, function(err, user) {
+    question001(incoming, user)
+  });
+}
+function question001(incoming, user){
+  bot.reply(incoming, {
+      text: `Awesome, lets get started. First off, how often do you eat chicken?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "On a regular basis",
+              "payload": "On a regular basis",
+          },
+          {
+              "content_type": "text",
+              "title": "Once and a while",
+              "payload": "Once and a while",
+          },
+          {
+              "content_type": "text",
+              "title": "Rarely",
+              "payload": "Rarely",
+          },
+          {
+              "content_type": "text",
+              "title": "Never",
+              "payload": "Never",
+          },
+      ]
+  });
+  // startRemindUserCounter(incoming)
+}
+
 controller.hears(['what can I do here?'], 'message_received', function(bot, message) {
     bot.reply(message, "You can complete surveys with me to help me complete my research!");
 });
