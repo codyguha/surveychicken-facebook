@@ -80,7 +80,7 @@ controller.hears(['hi', 'Hi'], 'message_received', function(bot, incoming) {
   });
 });
 function welcomeUser(incoming, user) {
-  bot.reply(message, {
+  bot.reply(incoming, {
       text: `Hey ${user.firstName}! I’m the host here at Survey Chicken.  If you get lost, or if you want a fresh start just text “Hi” and I’ll take you back to the beginning. What would you like to do first?`,
       quick_replies: [
           {
