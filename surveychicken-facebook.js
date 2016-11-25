@@ -977,6 +977,7 @@ function getLocation(incoming, user){
       text: `Please share your location.`,
       quick_replies: [
           {
+              "title": "Location",
               "content_type": "location",
           }
       ]
