@@ -900,13 +900,13 @@ function getEmoji(incoming, user){
   var id = incoming.user
     bot.startConversation(incoming, function(err, convo) {
         convo.ask({
-          bot.reply(incoming, "…and we are done! Thanks for the chat. Let me know what you thought by selecting an emoji.");
+          text: "…and we are done! Thanks for the chat. Let me know what you thought by selecting an emoji.";
         }, function(response, convo) {
             bot.reply(incoming, "…emoji saved :)");
             saveToMongoDb(id, response, "emoji")
             // getContact(incoming, user)
             convo.next();
-        });
+          });
     });
 
 }
