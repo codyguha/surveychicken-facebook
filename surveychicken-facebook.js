@@ -123,7 +123,7 @@ controller.hears(['Not now','Maybe later'], 'message_received',custom_hear_middl
     bot.reply(incoming, `Ok. Text "hi" or "GET CHICKEN!" when you have time to chat.`);
   });
 });
-controller.hears(['GET CHICKEN!','Get Chicken!','get chicken!'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+controller.hears(['GET CHICKEN!','Get Chicken!', 'Get chicken!', 'get chicken!'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   progress = 0
   getProfile(incoming.user, function(err, user) {
     getChickenNow(incoming, user)
@@ -954,7 +954,7 @@ function getChickenNow(incoming, user){
             "title":"GET CHICKEN NOW!",
             "item_url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
             "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
-            "subtitle": "Why not order some delivery right now.  You can click on the 'GET CHICKEN!' button or select 'Continue' to pass.",
+            "subtitle": "Why not order some delivery right now!",
             "buttons":[
               {
                 "type":"web_url",
