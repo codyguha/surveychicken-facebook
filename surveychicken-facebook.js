@@ -960,11 +960,6 @@ function getChickenNow(incoming, user){
                 "type":"web_url",
                 "url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
                 "title":"GET CHICKEN!"
-              },
-              {
-                "type":"postback",
-                "title":"Continue",
-                "payload":"Continue"
               }
             ]
           }
