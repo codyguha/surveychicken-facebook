@@ -108,6 +108,11 @@ controller.hears(['Continue'], 'message_received',custom_hear_middleware, functi
     checkProgress(incoming, user)
   });
 });
+controller.hears(['Not right now'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  getProfile(incoming.user, function(err, user) {
+    checkProgress(incoming, user)
+  });
+});
 controller.hears(['Ok, lets do it'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     question011(incoming, user)
@@ -859,6 +864,7 @@ function suggestChicken(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function getChicken(incoming, user){
+  progress = 16
   var message = {
     "attachment":{
       "type":"template",
@@ -869,6 +875,7 @@ function getChicken(incoming, user){
             "title":"GET CHICKEN NOW!",
             "item_url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
             "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
+            "subtitle": "Why not order some delivery right now.  You can click on the 'GET CHICKEN!' button or select 'Continue' to pass."
             "buttons":[
               {
                 "type":"web_url",
@@ -877,8 +884,8 @@ function getChicken(incoming, user){
               },
               {
                 "type":"postback",
-                "title":"Not right now",
-                "payload":"DEVELOPER_DEFINED_PAYLOAD"
+                "title":"Continue",
+                "payload":"Continue"
               }
             ]
           }
@@ -887,6 +894,21 @@ function getChicken(incoming, user){
     }
   }
   bot.reply(incoming, message);
+}
+function getEmoji(incoming, user){
+  progress = 17
+  var id = incoming.user
+    bot.startConversation(incoming, function(err, convo) {
+        convo.ask({
+          bot.reply(incoming, "…and we are done! Thanks for the chat. Let me know what you thought by selecting an emoji.");
+        }, function(response, convo) {
+            bot.reply(incoming, "…emoji saved :)");
+            saveToMongoDb(id, response, "emoji")
+            // getContact(incoming, user)
+            convo.next();
+        });
+    });
+
 }
 controller.hears(['what can I do here?'], 'message_received', function(bot, message) {
     bot.reply(message, "You can complete surveys with me to help me complete my research!");
@@ -935,6 +957,8 @@ function checkProgress(incoming, user){
 	} else if (progress === 15) {
 		question015(incoming, user)
 	} else if (progress === 16) {
-    getContact(incoming, user)
+    getEmoji(incoming, user)
+  } else if (progress === 17) {
+    getEmoji(incoming, user)
   }
 }
