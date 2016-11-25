@@ -220,6 +220,7 @@ controller.on('message_received', function(bot, incoming) {
       if (text === "Yes") {
         suggestChicken(incoming, user)
       } else {
+        getEmoji(incoming, user)
       }
     } else if (payload === "get_chicken") {
       getChicken(incoming, user)
@@ -270,7 +271,7 @@ function question001(incoming, user){
           },
           {
               "content_type": "text",
-              "title": "Once and a while",
+              "title": "Once in a while",
               "payload": "response_01",
           },
           {
@@ -536,7 +537,7 @@ function question006(incoming, user){
           },
           {
               "content_type": "text",
-              "title": "Convienience store",
+              "title": "Convenience store",
               "payload": "response_06",
           }
       ]
@@ -631,7 +632,7 @@ function question010a(incoming, user){
       quick_replies: [
           {
               "content_type": "text",
-              "title": "Cures hungover",
+              "title": "Cures hungovers",
               "payload": "response_10",
           },
           {
