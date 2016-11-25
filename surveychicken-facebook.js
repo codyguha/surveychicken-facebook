@@ -103,6 +103,11 @@ controller.hears(['hi', 'Hi'], 'message_received',custom_hear_middleware, functi
     welcomeUser(incoming, user)
   });
 });
+controller.hears(['Never'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  getProfile(incoming.user, function(err, user) {
+    endSurveyBeforeItStarts(incoming, user)
+  });
+});
 controller.hears(['Continue'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     checkProgress(incoming, user)
@@ -111,6 +116,17 @@ controller.hears(['Continue'], 'message_received',custom_hear_middleware, functi
 controller.hears(['Not right now'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     checkProgress(incoming, user)
+  });
+});
+controller.hears(['Not now','Maybe later'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  getProfile(incoming.user, function(err, user) {
+    bot.reply(incoming, `Ok. Text "hi" or "GET CHICKEN!" when you have time to chat.`);
+  });
+});
+controller.hears(['GET CHICKEN!','Get Chicken!','get chicken!'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  progress = 0
+  getProfile(incoming.user, function(err, user) {
+    getChickenNow(incoming, user)
   });
 });
 controller.hears(['Ok, lets do it'], 'message_received',custom_hear_middleware, function(bot, incoming) {
@@ -207,9 +223,41 @@ controller.on('message_received', function(bot, incoming) {
       }
     } else if (payload === "get_chicken") {
       getChicken(incoming, user)
+    } else if (payload === "response_16") {
+      saveToMongoDb(id, text, "contact_method")
+      if (text === "Email") {
+        getEmail(incoming, user)
+      } else if (text === "Twitter") {
+        getTwitter(incoming, user)
+      } else if (text === "Linkedin") {
+        getLinkedin(incoming, user)
+      } else if (text === "Do not contact me") {
+        saveToMongoDb(id, text, "contact")
+        surveyEnd(incoming, user)
+      }
     }
   });
 });
+function endSurveyBeforeItStarts(incoming, user){
+  progress = 1
+  bot.reply(incoming, {
+      text: `Ok I’m glad we got that out the way.  I suppose there is no point in bugging you with more questions about your chicken preferences.  Do you want to continue the survey anyways?`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Continue",
+              "payload": "Continue",
+          },
+          {
+              "content_type": "text",
+              "title": "Not now",
+              "payload": "Not now",
+          }
+      ]
+  });
+  // startRemindUserCounter(incoming)
+
+}
 function question001(incoming, user){
   progress = 1
   bot.reply(incoming, {
@@ -895,14 +943,45 @@ function getChicken(incoming, user){
   }
   bot.reply(incoming, message);
 }
+function getChickenNow(incoming, user){
+  var message = {
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "title":"GET CHICKEN NOW!",
+            "item_url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
+            "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
+            "subtitle": "Why not order some delivery right now.  You can click on the 'GET CHICKEN!' button or select 'Continue' to pass.",
+            "buttons":[
+              {
+                "type":"web_url",
+                "url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
+                "title":"GET CHICKEN!"
+              },
+              {
+                "type":"postback",
+                "title":"Continue",
+                "payload":"Continue"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+  bot.reply(incoming, message);
+}
 function getEmoji(incoming, user){
-  progress = 17
+  progress = 16
   var id = incoming.user
     bot.startConversation(incoming, function(err, convo) {
         convo.ask({
           text: "…and we are done! Thanks for the chat. Let me know what you thought by selecting an emoji.",
         }, function(response, convo) {
-            bot.reply(incoming, "…emoji saved :)");
+            getContact(incoming, user)
             saveToMongoDb(id, response, "emoji")
             // getContact(incoming, user)
             convo.next();
@@ -910,12 +989,92 @@ function getEmoji(incoming, user){
     });
 
 }
+function getContact (incoming, user) {
+  progress = 18
+  bot.reply(incoming, {
+      text: `Sweet. If you would like to stay in the “coop", I mean loop, on Survey Chicken updates just leave me your contact info and I’ll keep you posted.`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Do not contact me",
+              "payload": "response_16",
+          },
+          {
+              "content_type": "text",
+              "title": "Email",
+              "payload": "response_16",
+          },
+          {
+              "content_type": "text",
+              "title": "Twitter",
+              "payload": "response_16",
+          },
+          {
+              "content_type": "text",
+              "title": "Linkedin",
+              "payload": "response_16",
+          }
+      ]
+  });
+
+  // endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function getEmail(incoming, user){
+  var id = incoming.user
+    bot.startConversation(incoming, function(err, convo) {
+        convo.ask({
+          text: "Awesome, and what is your email address?",
+        }, function(response, convo) {
+            surveyEnd(incoming, user)
+            saveToMongoDb(id, response, "contact")
+            // getContact(incoming, user)
+            convo.next();
+          });
+    });
+  // endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function getTwitter(incoming, user){
+  var id = incoming.user
+    bot.startConversation(incoming, function(err, convo) {
+        convo.ask({
+          text: "Awesome, and what is your twitter handle?",
+        }, function(response, convo) {
+            surveyEnd(incoming, user)
+            saveToMongoDb(id, response, "contact")
+            // getContact(incoming, user)
+            convo.next();
+          });
+    });
+  // endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+function getLinkedin(incoming, user){
+  var id = incoming.user
+    bot.startConversation(incoming, function(err, convo) {
+        convo.ask({
+          text: "Awesome, and what is your Linkedin address?",
+        }, function(response, convo) {
+            surveyEnd(incoming, user)
+            saveToMongoDb(id, response, "contact")
+            // getContact(incoming, user)
+            convo.next();
+          });
+    });
+  // endRemindUserCounter()
+  // startRemindUserCounter(incoming)
+}
+
+function surveyEnd(incoming, user){
+   bot.reply(incoming, `Thank you that is all I wanted to know. I will be in touch if I recieve any updates. Text "hi" to do the survey agian or text "GET CHICKEN!" to get chicken delivered right now!`);
+}
 controller.hears(['what can I do here?'], 'message_received', function(bot, message) {
     bot.reply(message, "You can complete surveys with me to help me complete my research!");
 });
 
 controller.hears(['help'], 'message_received', function(bot, message) {
-    bot.reply(message, "type 'hi' to see a list of surveys to complete.");
+    bot.reply(message, "type 'hi' to get started.");
 });
 
 controller.on('message_received', function(bot, message) {
@@ -957,8 +1116,6 @@ function checkProgress(incoming, user){
 	} else if (progress === 15) {
 		question015(incoming, user)
 	} else if (progress === 16) {
-    getEmoji(incoming, user)
-  } else if (progress === 17) {
     getEmoji(incoming, user)
   }
 }
