@@ -213,7 +213,7 @@ function startJoke(incoming) {
 controller.on('message_received', function(bot, incoming) {
 var id = incoming.user
 var text = incoming.text
-  if(icoming.quick_reply.payload){
+  if(incoming.quick_reply.payload){
     var payload = incoming.quick_reply.payload
     getProfile(incoming.user, function(err, user) {
       if (payload === "Take a survey") {
