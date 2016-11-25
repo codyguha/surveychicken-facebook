@@ -123,7 +123,7 @@ controller.hears(['Not now','Maybe later'], 'message_received',custom_hear_middl
     bot.reply(incoming, `Ok. Text "hi" or "GET CHICKEN!" when you have time to chat.`);
   });
 });
-controller.hears(['GET CHICKEN!','Get Chicken!', 'Get chicken!', 'get chicken!'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+controller.hears(['GET CHICKEN!','Get Chicken!', 'Get chicken!', 'get chicken'], 'message_received', function(bot, incoming) {
   progress = 0
   getProfile(incoming.user, function(err, user) {
     getChickenNow(incoming, user)
