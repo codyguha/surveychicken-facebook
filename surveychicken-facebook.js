@@ -97,7 +97,11 @@ function custom_hear_middleware(patterns, message) {
     }
     return false;
 }
-
+controller.hears(['GPS'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  getProfile(incoming.user, function(err, user) {
+    getLocation(incoming, user)
+  });
+});
 controller.hears(['hi', 'Hi'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     welcomeUser(incoming, user)
@@ -134,6 +138,43 @@ controller.hears(['Ok, lets do it'], 'message_received',custom_hear_middleware, 
     question011(incoming, user)
   });
 });
+controller.hears(['Tell me a joke'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+    startJoke(incoming)
+});
+controller.hears(['Who’s there'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  bot.reply(incoming, {
+      text: `Bach`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Back who?",
+              "payload": "Back who?",
+          },
+          {
+              "content_type": "text",
+              "title": "Not now",
+              "payload": "Not now",
+          }
+      ]
+  });
+});
+controller.hears(['Back who?'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  bot.reply(incoming, {
+      text: `Bach, bach I'm a chicken!;) LOL - see I knew I could make you smile. What would you like to do next`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Take a survey",
+              "payload": "Take a survey",
+          },
+          {
+              "content_type": "text",
+              "title": "GET CHICKEN!",
+              "payload": "GET CHICKEN!",
+          }
+      ]
+  });
+});
 function welcomeUser(incoming, user) {
   userValidation(incoming.user, user);
   bot.reply(incoming, {
@@ -152,92 +193,111 @@ function welcomeUser(incoming, user) {
       ]
   });
 }
-controller.on('message_received', function(bot, incoming) {
-  var id = incoming.user
-  var payload = incoming.quick_reply.payload
-  var text = incoming.text
-  getProfile(incoming.user, function(err, user) {
-    if (payload === "Take a survey") {
-      question001(incoming, user)
-    } else if (payload === "response_01"){
-      question002(incoming, user)
-      saveToMongoDb(id, text, "frequency")
-    } else if (payload === "response_02"){
-      question003(incoming, user)
-      saveToMongoDb(id, text, "buy_based_on")
-    } else if (payload === "response_03"){
-      question004(incoming, user)
-      saveToMongoDb(id, text, "favorite_preparation")
-    } else if (payload === "response_04"){
-      saveToMongoDb(id, text, "side_dish")
-      if (text === "Potatoes") {
-        question005Potatoes(incoming, user)
-      } else if (text === "Rice") {
-        question005Rice(incoming, user)
-      } else if (text === "Salad") {
-        question005Salad(incoming, user)
-      } else if (text === "Vegetables") {
-        question005Vegetables(incoming, user)
-      }
-    } else if (payload === "response_05") {
-      question006(incoming, user)
-      saveToMongoDb(id, text, "side_dish_detail")
-    } else if (payload === "response_06") {
-      question007(incoming, user)
-      saveToMongoDb(id, text, "location_preference")
-    } else if (payload === "response_07") {
-      question008(incoming, user)
-      saveToMongoDb(id, text, "backup_option")
-    } else if (payload === "response_09") {
-      if (text === "I love it") {
-        saveToMongoDb(id, text, "relationship")
-        saveToMongoDb(id, text, "relationship_detail")
-        question010end(incoming, user)
-      } else if (text === "Guilty pleasure") {
-        saveToMongoDb(id, text, "relationship")
-        question010a(incoming, user)
-      } else if (text === "Not really my thing" || text === "Never eat it") {
-        saveToMongoDb(id, text, "relationship")
-        question010b(incoming, user)
-      }
-    } else if (payload === "response_10") {
-      question010end(incoming, user)
-      saveToMongoDb(id, text, "relationship_detail")
-    } else if (payload === "response_11") {
-      question012(incoming, user)
-      saveToMongoDb(id, text, "chk_burger")
-    } else if (payload === "response_12") {
-      question013(incoming, user)
-      saveToMongoDb(id, text, "chk_cake")
-    } else if (payload === "response_13") {
-      question014(incoming, user)
-      saveToMongoDb(id, text, "chk_cone")
-    } else if (payload === "response_14") {
-      question015(incoming, user)
-      saveToMongoDb(id, text, "chk_dog")
-    } else if (payload === "response_15") {
-      saveToMongoDb(id, text, "hunger")
-      if (text === "Yes") {
-        suggestChicken(incoming, user)
-      } else {
-        getEmoji(incoming, user)
-      }
-    } else if (payload === "get_chicken") {
-      getChicken(incoming, user)
-    } else if (payload === "response_16") {
-      saveToMongoDb(id, text, "contact_method")
-      if (text === "Email") {
-        getEmail(incoming, user)
-      } else if (text === "Twitter") {
-        getTwitter(incoming, user)
-      } else if (text === "Linkedin") {
-        getLinkedin(incoming, user)
-      } else if (text === "Do not contact me") {
-        saveToMongoDb(id, text, "contact")
-        surveyEnd(incoming, user)
-      }
-    }
+function startJoke(incoming) {
+  bot.reply(incoming, {
+      text: `Knock Knock`,
+      quick_replies: [
+          {
+              "content_type": "text",
+              "title": "Who’s there?",
+              "payload": "Who’s there",
+          },
+          {
+              "content_type": "text",
+              "title": "Not now",
+              "payload": "Not now",
+          }
+      ]
   });
+}
+controller.on('message_received', function(bot, incoming) {
+var id = incoming.user
+var text = incoming.text
+  if(icoming.quick_reply.payload){
+    var payload = incoming.quick_reply.payload
+    getProfile(incoming.user, function(err, user) {
+      if (payload === "Take a survey") {
+        question001(incoming, user)
+      } else if (payload === "response_01"){
+        question002(incoming, user)
+        saveToMongoDb(id, text, "frequency")
+      } else if (payload === "response_02"){
+        question003(incoming, user)
+        saveToMongoDb(id, text, "buy_based_on")
+      } else if (payload === "response_03"){
+        question004(incoming, user)
+        saveToMongoDb(id, text, "favorite_preparation")
+      } else if (payload === "response_04"){
+        saveToMongoDb(id, text, "side_dish")
+        if (text === "Potatoes") {
+          question005Potatoes(incoming, user)
+        } else if (text === "Rice") {
+          question005Rice(incoming, user)
+        } else if (text === "Salad") {
+          question005Salad(incoming, user)
+        } else if (text === "Vegetables") {
+          question005Vegetables(incoming, user)
+        }
+      } else if (payload === "response_05") {
+        question006(incoming, user)
+        saveToMongoDb(id, text, "side_dish_detail")
+      } else if (payload === "response_06") {
+        question007(incoming, user)
+        saveToMongoDb(id, text, "location_preference")
+      } else if (payload === "response_07") {
+        question008(incoming, user)
+        saveToMongoDb(id, text, "backup_option")
+      } else if (payload === "response_09") {
+        if (text === "I love it") {
+          saveToMongoDb(id, text, "relationship")
+          saveToMongoDb(id, text, "relationship_detail")
+          question010end(incoming, user)
+        } else if (text === "Guilty pleasure") {
+          saveToMongoDb(id, text, "relationship")
+          question010a(incoming, user)
+        } else if (text === "Not really my thing" || text === "Never eat it") {
+          saveToMongoDb(id, text, "relationship")
+          question010b(incoming, user)
+        }
+      } else if (payload === "response_10") {
+        question010end(incoming, user)
+        saveToMongoDb(id, text, "relationship_detail")
+      } else if (payload === "response_11") {
+        question012(incoming, user)
+        saveToMongoDb(id, text, "chk_burger")
+      } else if (payload === "response_12") {
+        question013(incoming, user)
+        saveToMongoDb(id, text, "chk_cake")
+      } else if (payload === "response_13") {
+        question014(incoming, user)
+        saveToMongoDb(id, text, "chk_cone")
+      } else if (payload === "response_14") {
+        question015(incoming, user)
+        saveToMongoDb(id, text, "chk_dog")
+      } else if (payload === "response_15") {
+        saveToMongoDb(id, text, "hunger")
+        if (text === "Yes") {
+          suggestChicken(incoming, user)
+        } else {
+          getEmoji(incoming, user)
+        }
+      } else if (payload === "get_chicken") {
+        getChicken(incoming, user)
+      } else if (payload === "response_16") {
+        saveToMongoDb(id, text, "contact_method")
+        if (text === "Email") {
+          getEmail(incoming, user)
+        } else if (text === "Twitter") {
+          getTwitter(incoming, user)
+        } else if (text === "Linkedin") {
+          getLinkedin(incoming, user)
+        } else if (text === "Do not contact me") {
+          saveToMongoDb(id, text, "contact")
+          surveyEnd(incoming, user)
+        }
+      }
+    });
+  }
 });
 function endSurveyBeforeItStarts(incoming, user){
   progress = 2
@@ -912,6 +972,16 @@ function suggestChicken(incoming, user){
 	// endRemindUserCounter()
   // startRemindUserCounter(incoming)
 }
+function getLocation(incoming, user){
+  bot.reply(incoming, {
+      text: `Please share your location.`,
+      quick_replies: [
+          {
+              "content_type": "location",
+          }
+      ]
+  });
+}
 function getChicken(incoming, user){
   progress = 16
   var message = {
@@ -924,7 +994,7 @@ function getChicken(incoming, user){
             "title":"GET CHICKEN NOW!",
             "item_url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
             "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
-            "subtitle": "Why not order some delivery right now.  You can click on the 'GET CHICKEN!' button or select 'Continue' to pass.",
+            "subtitle": "Why not order some delivery right now.",
             "buttons":[
               {
                 "type":"web_url",
