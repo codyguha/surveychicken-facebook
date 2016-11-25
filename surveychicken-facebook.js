@@ -240,7 +240,7 @@ controller.on('message_received', function(bot, incoming) {
   });
 });
 function endSurveyBeforeItStarts(incoming, user){
-  progress = 1
+  progress = 2
   bot.reply(incoming, {
       text: `Ok I’m glad we got that out the way.  I suppose there is no point in bugging you with more questions about your chicken preferences.  Do you want to continue the survey anyways?`,
       quick_replies: [
