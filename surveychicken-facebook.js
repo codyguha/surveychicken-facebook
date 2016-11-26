@@ -211,96 +211,99 @@ function startJoke(incoming) {
   });
 }
 controller.on('message_received', function(bot, incoming) {
-var id = incoming.user
-var text = incoming.text
-  if(incoming.quick_reply.payload){
-    var payload = incoming.quick_reply.payload
-    getProfile(incoming.user, function(err, user) {
-      if (payload === "Take a survey") {
-        question001(incoming, user)
-      } else if (payload === "response_01"){
-        question002(incoming, user)
-        saveToMongoDb(id, text, "frequency")
-      } else if (payload === "response_02"){
-        question003(incoming, user)
-        saveToMongoDb(id, text, "buy_based_on")
-      } else if (payload === "response_03"){
-        question004(incoming, user)
-        saveToMongoDb(id, text, "favorite_preparation")
-      } else if (payload === "response_04"){
-        saveToMongoDb(id, text, "side_dish")
-        if (text === "Potatoes") {
-          question005Potatoes(incoming, user)
-        } else if (text === "Rice") {
-          question005Rice(incoming, user)
-        } else if (text === "Salad") {
-          question005Salad(incoming, user)
-        } else if (text === "Vegetables") {
-          question005Vegetables(incoming, user)
-        }
-      } else if (payload === "response_05") {
-        question006(incoming, user)
-        saveToMongoDb(id, text, "side_dish_detail")
-      } else if (payload === "response_06") {
-        question007(incoming, user)
-        saveToMongoDb(id, text, "location_preference")
-      } else if (payload === "response_07") {
-        question008(incoming, user)
-        saveToMongoDb(id, text, "backup_option")
-      } else if (payload === "response_09") {
-        if (text === "I love it") {
-          saveToMongoDb(id, text, "relationship")
-          saveToMongoDb(id, text, "relationship_detail")
-          question010end(incoming, user)
-        } else if (text === "Guilty pleasure") {
-          saveToMongoDb(id, text, "relationship")
-          question010a(incoming, user)
-        } else if (text === "Not really my thing" || text === "Never eat it") {
-          saveToMongoDb(id, text, "relationship")
-          question010b(incoming, user)
-        }
-      } else if (payload === "response_10") {
-        question010end(incoming, user)
-        saveToMongoDb(id, text, "relationship_detail")
-      } else if (payload === "response_11") {
-        question012(incoming, user)
-        saveToMongoDb(id, text, "chk_burger")
-      } else if (payload === "response_12") {
-        question013(incoming, user)
-        saveToMongoDb(id, text, "chk_cake")
-      } else if (payload === "response_13") {
-        question014(incoming, user)
-        saveToMongoDb(id, text, "chk_cone")
-      } else if (payload === "response_14") {
-        question015(incoming, user)
-        saveToMongoDb(id, text, "chk_dog")
-      } else if (payload === "response_15") {
-        saveToMongoDb(id, text, "hunger")
-        if (text === "Yes") {
-          suggestChicken(incoming, user)
-        } else {
-          getEmoji(incoming, user)
-        }
-      } else if (payload === "get_chicken") {
-        getChicken(incoming, user)
-      } else if (payload === "response_16") {
-        saveToMongoDb(id, text, "contact_method")
-        if (text === "Email") {
-          getEmail(incoming, user)
-        } else if (text === "Twitter") {
-          getTwitter(incoming, user)
-        } else if (text === "Linkedin") {
-          getLinkedin(incoming, user)
-        } else if (text === "Do not contact me") {
-          saveToMongoDb(id, text, "contact")
-          surveyEnd(incoming, user)
-        }
-      }
-    });
-  } else {
-    console.log(incoming)
-  }
+  console.log(incoming.entry)
 });
+// controller.on('message_received', function(bot, incoming) {
+// var id = incoming.user
+// var text = incoming.text
+//   if(incoming.quick_reply.payload){
+//     var payload = incoming.quick_reply.payload
+//     getProfile(incoming.user, function(err, user) {
+//       if (payload === "Take a survey") {
+//         question001(incoming, user)
+//       } else if (payload === "response_01"){
+//         question002(incoming, user)
+//         saveToMongoDb(id, text, "frequency")
+//       } else if (payload === "response_02"){
+//         question003(incoming, user)
+//         saveToMongoDb(id, text, "buy_based_on")
+//       } else if (payload === "response_03"){
+//         question004(incoming, user)
+//         saveToMongoDb(id, text, "favorite_preparation")
+//       } else if (payload === "response_04"){
+//         saveToMongoDb(id, text, "side_dish")
+//         if (text === "Potatoes") {
+//           question005Potatoes(incoming, user)
+//         } else if (text === "Rice") {
+//           question005Rice(incoming, user)
+//         } else if (text === "Salad") {
+//           question005Salad(incoming, user)
+//         } else if (text === "Vegetables") {
+//           question005Vegetables(incoming, user)
+//         }
+//       } else if (payload === "response_05") {
+//         question006(incoming, user)
+//         saveToMongoDb(id, text, "side_dish_detail")
+//       } else if (payload === "response_06") {
+//         question007(incoming, user)
+//         saveToMongoDb(id, text, "location_preference")
+//       } else if (payload === "response_07") {
+//         question008(incoming, user)
+//         saveToMongoDb(id, text, "backup_option")
+//       } else if (payload === "response_09") {
+//         if (text === "I love it") {
+//           saveToMongoDb(id, text, "relationship")
+//           saveToMongoDb(id, text, "relationship_detail")
+//           question010end(incoming, user)
+//         } else if (text === "Guilty pleasure") {
+//           saveToMongoDb(id, text, "relationship")
+//           question010a(incoming, user)
+//         } else if (text === "Not really my thing" || text === "Never eat it") {
+//           saveToMongoDb(id, text, "relationship")
+//           question010b(incoming, user)
+//         }
+//       } else if (payload === "response_10") {
+//         question010end(incoming, user)
+//         saveToMongoDb(id, text, "relationship_detail")
+//       } else if (payload === "response_11") {
+//         question012(incoming, user)
+//         saveToMongoDb(id, text, "chk_burger")
+//       } else if (payload === "response_12") {
+//         question013(incoming, user)
+//         saveToMongoDb(id, text, "chk_cake")
+//       } else if (payload === "response_13") {
+//         question014(incoming, user)
+//         saveToMongoDb(id, text, "chk_cone")
+//       } else if (payload === "response_14") {
+//         question015(incoming, user)
+//         saveToMongoDb(id, text, "chk_dog")
+//       } else if (payload === "response_15") {
+//         saveToMongoDb(id, text, "hunger")
+//         if (text === "Yes") {
+//           suggestChicken(incoming, user)
+//         } else {
+//           getEmoji(incoming, user)
+//         }
+//       } else if (payload === "get_chicken") {
+//         getChicken(incoming, user)
+//       } else if (payload === "response_16") {
+//         saveToMongoDb(id, text, "contact_method")
+//         if (text === "Email") {
+//           getEmail(incoming, user)
+//         } else if (text === "Twitter") {
+//           getTwitter(incoming, user)
+//         } else if (text === "Linkedin") {
+//           getLinkedin(incoming, user)
+//         } else if (text === "Do not contact me") {
+//           saveToMongoDb(id, text, "contact")
+//           surveyEnd(incoming, user)
+//         }
+//       }
+//     });
+//   } else {
+//     console.log(incoming)
+//   }
+// });
 function endSurveyBeforeItStarts(incoming, user){
   progress = 2
   bot.reply(incoming, {
