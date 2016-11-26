@@ -1,5 +1,7 @@
 var Botkit = require('botkit/lib/Botkit.js');
 var mongodb = require('mongodb');
+var cities = require('cities');
+
 const request = require('request');
 
 var controller = Botkit.facebookbot({
@@ -214,6 +216,10 @@ controller.on('message_received', function(bot, incoming) {
   if (incoming.quick_reply === undefined){
     console.log(">>>>>>>>>>LAT: " + incoming.attachments[0].payload.coordinates.lat)
     console.log(">>>>>>>>>>LONG: " + incoming.attachments[0].payload.coordinates.long)
+    var lat = incoming.attachments[0].payload.coordinates.lat
+    var long = incoming.attachments[0].payload.coordinates.long
+    var location = cities.gps_lookup(lat, lng);
+    console.log(">>>>>>>>>>CITY: " + location.city)
   } else if(incoming.quick_reply.payload){
     var id = incoming.user
     var text = incoming.text
