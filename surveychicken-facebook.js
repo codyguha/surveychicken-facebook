@@ -220,7 +220,7 @@ controller.on('message_received', function(bot, incoming) {
     var lng = (incoming.attachments[0].payload.coordinates.long).toString()
     console.log(">>>>>>>>>>stings: lats: " + lat + " longs: " + lng)
     var location = cities.gps_lookup(lat, lng);
-    console.log(">>>>>>>>>>info: " + location.city)
+    console.log(">>>>>>>>>>info: " + location.longitude)
   } else if(incoming.quick_reply.payload){
     var id = incoming.user
     var text = incoming.text
