@@ -219,7 +219,7 @@ controller.on('message_received', function(bot, incoming) {
     var lat = incoming.attachments[0].payload.coordinates.lat
     var lng = incoming.attachments[0].payload.coordinates.long
     var location = cities.gps_lookup(lat.toString(), lng.toString());
-    console.log(">>>>>>>>>>info: " + location)
+    console.log(">>>>>>>>>>info: " + location.toString())
   } else if(incoming.quick_reply.payload){
     var id = incoming.user
     var text = incoming.text
