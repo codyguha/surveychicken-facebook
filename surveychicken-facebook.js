@@ -1,7 +1,6 @@
 var Botkit = require('botkit/lib/Botkit.js');
 var mongodb = require('mongodb');
-var cities = require('cities');
-
+var geocoder = require('geocoder');
 const request = require('request');
 
 var controller = Botkit.facebookbot({
@@ -216,11 +215,12 @@ controller.on('message_received', function(bot, incoming) {
   if (incoming.quick_reply === undefined){
     console.log(">>>>>>>>>>LAT: " + incoming.attachments[0].payload.coordinates.lat)
     console.log(">>>>>>>>>>LONG: " + incoming.attachments[0].payload.coordinates.long)
-    var lat = (incoming.attachments[0].payload.coordinates.lat).toString()
-    var lng = (incoming.attachments[0].payload.coordinates.long).toString()
-    console.log(">>>>>>>>>>stings: lats: " + lat + " longs: " + lng)
-    var location = cities.gps_lookup(lat, lng);
-    console.log(">>>>>>>>>>info: " + location.longitude)
+    var lat = incoming.attachments[0].payload.coordinates.lat
+    var lng = incoming.attachments[0].payload.coordinates.long
+    geocoder.reverseGeocode( lat, lng, function ( err, data ) {
+        // do something with data
+        console.log(">>>>>>>>>>DATA: " + data)
+    });
   } else if(incoming.quick_reply.payload){
     var id = incoming.user
     var text = incoming.text

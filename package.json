@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "botkit": "^0.4.2",
-    "cities": "^1.1.2",
+    "geocoder": "^0.2.2",
     "mongodb": "^2.2.11",
     "request": "^2.79.0"
   }
