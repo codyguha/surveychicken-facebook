@@ -220,6 +220,8 @@ controller.on('message_received', function(bot, incoming) {
     geocoder.reverseGeocode( lat, lng, function ( err, data ) {
         // do something with data
         str = JSON.stringify(data, null, 4);
+
+        console.log(">>>>>>>>>>CITYNAME: " + data.results[0].address_components[2].long_name)
         console.log(">>>>>>>>>>DATA: " + str)
     });
   } else if(incoming.quick_reply.payload){
