@@ -1056,7 +1056,7 @@ function getChickenNow(incoming, user, city_name){
             "buttons":[
               {
                 "type":"web_url",
-                "url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
+                "url":"https://www.just-eat.ca/delivery/"+city_name+"/chicken/",
                 "title":"GET CHICKEN!"
               }
             ]
