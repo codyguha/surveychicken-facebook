@@ -219,7 +219,8 @@ controller.on('message_received', function(bot, incoming) {
     var lng = incoming.attachments[0].payload.coordinates.long
     geocoder.reverseGeocode( lat, lng, function ( err, data ) {
         // do something with data
-        console.log(">>>>>>>>>>DATA: " + data)
+        str = JSON.stringify(data);
+        console.log(">>>>>>>>>>DATA: " + str)
     });
   } else if(incoming.quick_reply.payload){
     var id = incoming.user
