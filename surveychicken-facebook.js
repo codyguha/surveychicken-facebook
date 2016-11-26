@@ -213,7 +213,7 @@ function startJoke(incoming) {
 controller.on('message_received', function(bot, incoming) {
 var id = incoming.user
 var text = incoming.text
-  if (!incoming.quick_reply.payload) {
+  if (incoming.quick_reply.attachment.payload) {
     console.log(incoming)
   } else if(incoming.quick_reply.payload){
     var payload = incoming.quick_reply.payload
