@@ -217,7 +217,7 @@ controller.on('message_received', function(bot, incoming) {
     console.log(">>>>>>>>>>LAT: " + incoming.attachments[0].payload.coordinates.lat)
     console.log(">>>>>>>>>>LONG: " + incoming.attachments[0].payload.coordinates.long)
     var lat = incoming.attachments[0].payload.coordinates.lat
-    var long = incoming.attachments[0].payload.coordinates.long
+    var lng = incoming.attachments[0].payload.coordinates.long
     var location = cities.gps_lookup(lat, lng);
     console.log(">>>>>>>>>>CITY: " + location.city)
   } else if(incoming.quick_reply.payload){
