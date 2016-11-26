@@ -216,10 +216,11 @@ controller.on('message_received', function(bot, incoming) {
   if (incoming.quick_reply === undefined){
     console.log(">>>>>>>>>>LAT: " + incoming.attachments[0].payload.coordinates.lat)
     console.log(">>>>>>>>>>LONG: " + incoming.attachments[0].payload.coordinates.long)
-    var lat = incoming.attachments[0].payload.coordinates.lat
-    var lng = incoming.attachments[0].payload.coordinates.long
-    var location = cities.gps_lookup(lat.toString(), lng.toString());
-    console.log(">>>>>>>>>>info: " + location.toString())
+    var lat = (incoming.attachments[0].payload.coordinates.lat).toString()
+    var lng = (incoming.attachments[0].payload.coordinates.long).toString()
+    console.log(">>>>>>>>>>stings: lats: " + lat + " longs: " + lng)
+    var location = cities.gps_lookup(lat, lng);
+    console.log(">>>>>>>>>>info: " + location.city)
   } else if(incoming.quick_reply.payload){
     var id = incoming.user
     var text = incoming.text
