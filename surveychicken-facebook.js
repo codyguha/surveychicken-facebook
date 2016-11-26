@@ -77,6 +77,20 @@ function saveToMongoDb(id, value, key) {
 		});
 	});
 }
+function saveLocationToMongoDb(id, value) {
+	mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
+		if (err) throw err;
+		var results = db.collection('results');
+		var target_key = "user.location"
+		var target = {};
+		target[target_key] = value
+		results.update({
+			"user.id": `${id}`
+		}, {
+			$set: target
+		});
+	});
+}
 function userValidation(id, user) {
 	mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
 		var results = db.collection('results');
@@ -212,20 +226,19 @@ function startJoke(incoming) {
   });
 }
 controller.on('message_received', function(bot, incoming) {
+  var id = incoming.user
   if (incoming.quick_reply === undefined){
-    console.log(">>>>>>>>>>LAT: " + incoming.attachments[0].payload.coordinates.lat)
-    console.log(">>>>>>>>>>LONG: " + incoming.attachments[0].payload.coordinates.long)
     var lat = incoming.attachments[0].payload.coordinates.lat
     var lng = incoming.attachments[0].payload.coordinates.long
     geocoder.reverseGeocode( lat, lng, function ( err, data ) {
+        getProfile(incoming.user, function(err, user) {
+          var city_name = data.results[0].address_components[2].long_name
+          saveLocationToMongoDb(id, city_name)
+          getChickenNow(incoming, user, city_name)
+        }
         // do something with data
-        str = JSON.stringify(data, null, 4);
-
-        console.log(">>>>>>>>>>CITYNAME: " + data.results[0].address_components[2].long_name)
-        console.log(">>>>>>>>>>DATA: " + str)
     });
   } else if(incoming.quick_reply.payload){
-    var id = incoming.user
     var text = incoming.text
     var payload = incoming.quick_reply.payload
     getProfile(incoming.user, function(err, user) {
@@ -1006,7 +1019,7 @@ function getChicken(incoming, user){
         "elements":[
           {
             "title":"GET CHICKEN NOW!",
-            "item_url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
+            "item_url":"https://www.just-eat.ca/delivery/"+vancouver+"/chicken/",
             "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
             "subtitle": "Why not order some delivery right now.",
             "buttons":[
@@ -1028,7 +1041,7 @@ function getChicken(incoming, user){
   }
   bot.reply(incoming, message);
 }
-function getChickenNow(incoming, user){
+function getChickenNow(incoming, user, city_name){
   var message = {
     "attachment":{
       "type":"template",
@@ -1037,7 +1050,7 @@ function getChickenNow(incoming, user){
         "elements":[
           {
             "title":"GET CHICKEN NOW!",
-            "item_url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
+            "item_url":"https://www.just-eat.ca/delivery/"+city_name+"/chicken/",
             "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
             "subtitle": "Why not order some delivery right now!",
             "buttons":[
