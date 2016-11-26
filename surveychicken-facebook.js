@@ -211,7 +211,7 @@ function startJoke(incoming) {
   });
 }
 controller.on('message_received', function(bot, incoming) {
-  console.log(incoming.attachments.payload)
+  console.log(incoming.attachments[0].payload)
 });
 // controller.on('message_received', function(bot, incoming) {
 // var id = incoming.user
