@@ -233,7 +233,7 @@ controller.on('message_received', function(bot, incoming) {
     geocoder.reverseGeocode( lat, lng, function ( err, data ) {
         getProfile(incoming.user, function(err, user) {
           var location_formatted = data.results[0].formatted_address
-          var city_name = location_formatted.split(',')[0]
+          var city_name = location_formatted.split(',')[1]
           saveLocationToMongoDb(id, city_name)
           getChickenNow(incoming, user, city_name)
           console.log(">>>>>>>>>>>>>>>>>>>>>FORMATTED!!!: "+data.results[0].formatted_address)// do something with data
