@@ -215,7 +215,7 @@ function startJoke(incoming) {
           {
               "content_type": "text",
               "title": "Who’s there?",
-              "payload": "Who’s there",
+              "payload": "Who’s there?",
           },
           {
               "content_type": "text",
