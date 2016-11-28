@@ -156,7 +156,7 @@ controller.hears(['Ok, lets do it'], 'message_received',custom_hear_middleware, 
 controller.hears(['Tell me a joke'], 'message_received',custom_hear_middleware, function(bot, incoming) {
     startJoke(incoming)
 });
-controller.hears(['Who’s there'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+controller.hears(['Who’s there?'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   bot.reply(incoming, {
       text: `Bach`,
       quick_replies: [
