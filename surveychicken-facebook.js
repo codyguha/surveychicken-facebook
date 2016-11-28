@@ -1059,6 +1059,11 @@ function getChickenNow(incoming, user, city_name){
                 "type":"web_url",
                 "url":"https://www.just-eat.ca/delivery/"+city_name+"/chicken/",
                 "title":"GET CHICKEN!"
+              },
+              {
+                "type":"postback",
+                "title":"Continue",
+                "payload":"Continue"
               }
             ]
           }
