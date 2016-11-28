@@ -145,7 +145,7 @@ controller.hears(['Not now','Maybe later'], 'message_received',custom_hear_middl
 controller.hears(['GET CHICKEN!','Get Chicken!', 'Get chicken!', 'get chicken'], 'message_received', function(bot, incoming) {
   progress = 0
   getProfile(incoming.user, function(err, user) {
-    getChickenNow(incoming, user)
+    getLocation(incoming, user)
   });
 });
 controller.hears(['Ok, lets do it'], 'message_received',custom_hear_middleware, function(bot, incoming) {
@@ -308,7 +308,7 @@ controller.on('message_received', function(bot, incoming) {
           getEmoji(incoming, user)
         }
       } else if (payload === "get_chicken") {
-        getChicken(incoming, user)
+        getLocation(incoming, user)
       } else if (payload === "response_16") {
         saveToMongoDb(id, text, "contact_method")
         if (text === "Email") {
@@ -1009,38 +1009,38 @@ function getLocation(incoming, user){
       ]
   });
 }
-function getChicken(incoming, user){
-  progress = 16
-  var message = {
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"generic",
-        "elements":[
-          {
-            "title":"GET CHICKEN NOW!",
-            "item_url":"https://www.just-eat.ca/delivery/"+vancouver+"/chicken/",
-            "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
-            "subtitle": "Why not order some delivery right now.",
-            "buttons":[
-              {
-                "type":"web_url",
-                "url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
-                "title":"GET CHICKEN!"
-              },
-              {
-                "type":"postback",
-                "title":"Continue",
-                "payload":"Continue"
-              }
-            ]
-          }
-        ]
-      }
-    }
-  }
-  bot.reply(incoming, message);
-}
+// function getChicken(incoming, user){
+//   progress = 16
+//   var message = {
+//     "attachment":{
+//       "type":"template",
+//       "payload":{
+//         "template_type":"generic",
+//         "elements":[
+//           {
+//             "title":"GET CHICKEN NOW!",
+//             "item_url":"https://www.just-eat.ca/delivery/"+vancouver+"/chicken/",
+//             "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
+//             "subtitle": "Why not order some delivery right now.",
+//             "buttons":[
+//               {
+//                 "type":"web_url",
+//                 "url":"https://www.just-eat.ca/delivery/vancouver/chicken/",
+//                 "title":"GET CHICKEN!"
+//               },
+//               {
+//                 "type":"postback",
+//                 "title":"Continue",
+//                 "payload":"Continue"
+//               }
+//             ]
+//           }
+//         ]
+//       }
+//     }
+//   }
+//   bot.reply(incoming, message);
+// }
 function getChickenNow(incoming, user, city_name){
   var message = {
     "attachment":{
