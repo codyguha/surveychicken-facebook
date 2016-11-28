@@ -232,11 +232,12 @@ controller.on('message_received', function(bot, incoming) {
     var lng = incoming.attachments[0].payload.coordinates.long
     geocoder.reverseGeocode( lat, lng, function ( err, data ) {
         getProfile(incoming.user, function(err, user) {
-          var location_formatted = data.results[6].formatted_address
+          var location_formatted = data.results[1].formatted_address
           var city_name = location_formatted.split(',')[0]
           saveLocationToMongoDb(id, city_name)
           getChickenNow(incoming, user, city_name)
-          console.log(data.results[6].formatted_address)// do something with data
+          console.log(">>>>>>>>>>>>>>>>>>>>>FORMATTED!!!: "+data.results[1].formatted_address)// do something with data
+          console.log(">>>>>>>>>>>>>>>>>>>>>CITY!!!: "+city_name)//
         });
     });
   } else if(incoming.quick_reply.payload){
