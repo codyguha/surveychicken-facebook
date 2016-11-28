@@ -236,7 +236,7 @@ controller.on('message_received', function(bot, incoming) {
           saveLocationToMongoDb(id, city_name)
           getChickenNow(incoming, user, city_name)
         });
-        // do something with data
+        console.log(">>>>>>>>>>>>>>>>>>>>>CITY NAME: " + city_name)// do something with data
     });
   } else if(incoming.quick_reply.payload){
     var text = incoming.text
