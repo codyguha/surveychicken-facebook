@@ -1038,7 +1038,7 @@ function suggestChicken(incoming, user){
 }
 function getLocation(incoming, user){
   bot.reply(incoming, {
-      text: `Please share your location.`,
+      text: `I will find the closest restaurant that will deliver chicken to you.  Please share your location.`,
       quick_replies: [
           {
               "title": "Location",
