@@ -230,7 +230,7 @@ controller.on('facebook_postback', function(bot, incoming) {
 });
 controller.on('message_received', function(bot, incoming) {
   var id = incoming.user
-  if (incoming.attachments[0]){
+  if (incoming.attachments){
     var lat = incoming.attachments[0].payload.coordinates.lat
     var lng = incoming.attachments[0].payload.coordinates.long
     geocoder.reverseGeocode( lat, lng, function ( err, data ) {
