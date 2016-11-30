@@ -53,6 +53,7 @@ function saveUserToMongoDb(id, first_name, last_name, gender, locale, timezone) 
         platform: "facebook"
 			},
 			chicken_survey: {
+        progress: 0,
 				chk_burger: "1",
 				chk_cake: "1",
 				chk_cone: "1",
@@ -103,6 +104,18 @@ function userValidation(id, user) {
 		});
 	});
 }
+function getProgress(id){
+  mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
+    var results = db.collection('results');
+    results.find({
+      "user.id": `${id}`
+    }).toArray(function(err, found) {
+      if (found[0] === undefined) {
+        saveUserToMongoDb(`${id}`,`${user.first_name}`, `${user.last_name}`, `${user.gender}`, `${user.locale}`, `${user.timezone}`)
+      }
+    });
+  });
+}
 function custom_hear_middleware(patterns, message) {
 
     for (var p = 0; p < patterns.length; p++) {
@@ -143,9 +156,10 @@ controller.hears(['Not now','Maybe later'], 'message_received',custom_hear_middl
   });
 });
 controller.hears(['GET CHICKEN!','Get Chicken!', 'Get chicken!', 'get chicken'], 'message_received', function(bot, incoming) {
-  progress = 0
+  var progress = 0
   getProfile(incoming.user, function(err, user) {
     getLocation(incoming, user)
+    saveToMongoDb(incoming.user, progress, "progress")
   });
 });
 controller.hears(['Ok, lets do it'], 'message_received',custom_hear_middleware, function(bot, incoming) {
@@ -338,7 +352,7 @@ controller.on('message_received', function(bot, incoming) {
   }
 });
 function endSurveyBeforeItStarts(incoming, user){
-  progress = 2
+  var progress = 2
   bot.reply(incoming, {
       text: `Ok I’m glad we got that out the way.  I suppose there is no point in bugging you with more questions about your chicken preferences.  Do you want to continue the survey anyways?`,
       quick_replies: [
@@ -354,11 +368,13 @@ function endSurveyBeforeItStarts(incoming, user){
           }
       ]
   });
+  saveToMongoDb(incoming.user, progress, "progress")
   // startRemindUserCounter(incoming)
 
 }
 function question001(incoming, user){
-  progress = 1
+  var progress = 1
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Awesome, lets get started. First off, how often do you eat chicken?`,
       quick_replies: [
@@ -387,7 +403,8 @@ function question001(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question002(incoming, user){
-  progress = 2
+  var progress = 2
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Great! Next question... When you shop for chicken at the grocery store what is most important to you?`,
       quick_replies: [
@@ -417,7 +434,8 @@ function question002(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question003(incoming, user){
-  progress = 3
+  var progress = 3
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `What is your favorite way to prepare chicken at home?`,
       quick_replies: [
@@ -458,7 +476,8 @@ function question003(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question004(incoming, user){
-  progress = 4
+  var progress = 4
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `What is your preferred side dish to have with chicken?`,
       quick_replies: [
@@ -489,7 +508,8 @@ function question004(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question005Potatoes(incoming, user){
-  progress = 4
+  var progress = 4
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Yes! I love Potatoes too. How do you like your potatoes?`,
       quick_replies: [
@@ -519,7 +539,8 @@ function question005Potatoes(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question005Rice(incoming, user){
-  progress = 4
+  var progress = 4
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Rice is nice. What type of rice goes best with chicken?`,
       quick_replies: [
@@ -549,7 +570,8 @@ function question005Rice(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question005Salad(incoming, user){
-  progress = 4
+  var progress = 4
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Keeping it healthy with a salad, I like that. What type of salad goes best with chicken?`,
       quick_replies: [
@@ -579,7 +601,8 @@ function question005Salad(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question005Vegetables(incoming, user){
-  progress = 4
+  var progress = 4
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Gotta get those vegetables in. What vegetable goes best with chicken?`,
       quick_replies: [
@@ -614,7 +637,8 @@ function question005Vegetables(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question006(incoming, user){
-  progress = 5
+  var progress = 5
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Where do you most typically consume chicken outside of your home?`,
       quick_replies: [
@@ -644,7 +668,8 @@ function question006(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question007(incoming, user){
-  progress = 6
+  var progress = 6
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `If a preferred chicken option is not available which of the following would you typically choose?`,
       quick_replies: [
@@ -674,7 +699,8 @@ function question007(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question008(incoming, user){
-  progress = 7
+  var progress = 7
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Thanks for your input so far.  Are you ok to continue and answer a couple more questions?`,
       quick_replies: [
@@ -694,7 +720,8 @@ function question008(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question009(incoming, user){
-  progress = 7
+  var progress = 7
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `You're awesome. Let’s get specific. What is your relationship with fried chicken?`,
       quick_replies: [
@@ -724,7 +751,8 @@ function question009(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question010a(incoming, user){
-  progress = 7
+  var progress = 7
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Guilty pleasure you say, tell me more.`,
       quick_replies: [
@@ -750,7 +778,8 @@ function question010a(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question010b(incoming, user){
-  progress = 7
+  var progress = 7
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `So fried chicken isnt on your menu. Can you tell me more?`,
       quick_replies: [
@@ -786,7 +815,8 @@ function question010b(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question010end(incoming, user){
-  progress = 8
+  var progress = 8
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Ok cool. In the next set of questions I’m going to show you some pictures of fried chicken entrees.  Use the answers provided to tell me what you think.`,
       quick_replies: [
@@ -807,7 +837,8 @@ function question010end(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question011(incoming, user){
-  progress = 11
+  var progress = 11
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
     attachment:{
     type:"image",
@@ -848,7 +879,8 @@ function question011(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question012(incoming, user){
-  progress = 12
+  var progress = 12
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
     attachment:{
     type:"image",
@@ -889,7 +921,8 @@ function question012(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question013(incoming, user){
-  progress = 13
+  var progress = 13
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
     attachment:{
     type:"image",
@@ -930,7 +963,8 @@ function question013(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question014(incoming, user){
-  progress = 14
+  var progress = 14
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
     attachment:{
     type:"image",
@@ -971,7 +1005,8 @@ function question014(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function question015(incoming, user){
-  progress = 15
+  var progress = 15
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Has this survey made you hungry?`,
       quick_replies: [
@@ -991,7 +1026,8 @@ function question015(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function suggestChicken(incoming, user){
-  progress = 15
+  var progress = 15
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Ok would you like me to suggest some local take out options?`,
       quick_replies: [
@@ -1053,7 +1089,8 @@ function getChickenNow(incoming, user, city_name){
   bot.reply(incoming, message);
 }
 function getEmoji(incoming, user){
-  progress = 16
+  var progress = 16
+  saveToMongoDb(incoming.user, progress, "progress")
   var id = incoming.user
     bot.startConversation(incoming, function(err, convo) {
         convo.ask({
@@ -1068,7 +1105,8 @@ function getEmoji(incoming, user){
 
 }
 function getContact (incoming, user) {
-  progress = 18
+  var progress = 18
+  saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Sweet. If you would like to stay in the “coop", I mean loop, on Survey Chicken updates just leave me your contact info and I’ll keep you posted.`,
       quick_replies: [
@@ -1164,7 +1202,15 @@ controller.on('message_received', function(bot, message) {
 // });
 
 function checkProgress(incoming, user){
-  console.log("checked progress outputs!!!:  " + progress)
+  console.log("checked progress outputs!!!:  " +)
+  mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
+    var results = db.collection('results');
+    results.find({
+      "user.id": `${id}`
+    }).toArray(function(err, found) {
+      console.log(">>>>>>>PROGRESS: "+ found[0].chicken_survey.progress)
+    });
+  });
 	if (progress === 0) {
 		question001(incoming, user)
 	} else if (progress === 1) {
