@@ -226,7 +226,12 @@ function startJoke(incoming) {
   });
 }
 controller.on('facebook_postback', function(bot, incoming) {
-    console.log(">>>>>>>>>>>POSTBACK: " + incoming)
+    console.log(">>>>>>>>>>>POSTBACK: " + incoming.payload)
+    if (incoming.payload === "CLICKED_GET_STARTED_BUTTON") {
+      getProfile(incoming.user, function(err, user) {
+        welcomeUser(incoming, user)
+      });
+    }
 });
 controller.on('message_received', function(bot, incoming) {
   var id = incoming.user
