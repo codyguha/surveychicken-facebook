@@ -243,7 +243,7 @@ controller.on('message_received', function(bot, incoming) {
           console.log(">>>>>>>>>>>>>>>>>>>>>CITY!!!: "+city_name)//
         });
     });
-  } else if(incoming.quick_reply.payload){
+  } else if(incoming.quick_reply){
     var text = incoming.text
     var payload = incoming.quick_reply.payload
     getProfile(incoming.user, function(err, user) {
