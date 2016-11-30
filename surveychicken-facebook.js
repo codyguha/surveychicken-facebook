@@ -1202,7 +1202,6 @@ controller.on('message_received', function(bot, message) {
 // });
 
 function checkProgress(incoming, user){
-  console.log("checked progress outputs!!!:  " +)
   mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
     var results = db.collection('results');
     results.find({
