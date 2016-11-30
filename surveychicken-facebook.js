@@ -1016,7 +1016,7 @@ function question015(incoming, user){
   // startRemindUserCounter(incoming)
 }
 function suggestChicken(incoming, user){
-  var progress = 15
+  var progress = 16
   saveToMongoDb(incoming.user, progress, "progress")
   bot.reply(incoming, {
       text: `Ok would you like me to suggest some local take out options?`,
@@ -1048,8 +1048,6 @@ function getLocation(incoming, user){
   });
 }
 function getChickenNow(incoming, user, city_name){
-  var progress = 16
-  saveToMongoDb(incoming.user, progress, "progress")
   var message = {
     "attachment":{
       "type":"template",
@@ -1188,10 +1186,6 @@ controller.hears(['help'], 'message_received', function(bot, message) {
 controller.on('message_received', function(bot, message) {
     console.log(message)
 });
-
-// controller.on('facebook_optin', function(bot, message) {
-//     bot.reply(message, "YOU CLICKED PLUGIN !!!");
-// });
 
 function checkProgress(incoming, user){
   var id = incoming.user
