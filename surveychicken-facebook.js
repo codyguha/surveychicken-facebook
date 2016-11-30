@@ -226,7 +226,7 @@ function startJoke(incoming) {
   });
 }
 controller.on('facebook_postback', function(bot, incoming) {
-    console.log(incoming)
+    console.log(">>>>>>>>>>>POSTBACK: " + incoming)
 });
 controller.on('message_received', function(bot, incoming) {
   var id = incoming.user
@@ -329,7 +329,7 @@ controller.on('message_received', function(bot, incoming) {
       }
     });
   } else {
-    console.log(incoming)
+    console.log(">>>>>>>>>>NOMETHODFOR: " + incoming)
   }
 });
 function endSurveyBeforeItStarts(incoming, user){
