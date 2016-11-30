@@ -12,8 +12,6 @@ var controller = Botkit.facebookbot({
 var bot = controller.spawn({
 });
 
-var progress;
-
 controller.setupWebserver(process.env.PORT || 3000, function(err, webserver) {
     controller.createWebhookEndpoints(webserver, bot, function() {
         console.log('ONLINE!');
@@ -49,17 +47,15 @@ function saveUserToMongoDb(id, first_name, last_name, gender, locale, timezone) 
 				last_name: last_name,
         gender: gender,
         locale: locale,
-        timezone: timezone,
-        platform: "facebook"
+        timezone: timezone
 			},
 			chicken_survey: {
+        platform: "facebook",
         progress: 0,
-				chk_burger: "1",
-				chk_cake: "1",
-				chk_cone: "1",
-				chk_dog: "1",
-				emoji: "<3",
-        contact: "user@user.com"
+				chk_burger: "NA",
+				chk_cake: "NA",
+				chk_cone: "NA",
+				chk_dog: "NA"
 			}
 		})
 	})
@@ -103,18 +99,6 @@ function userValidation(id, user) {
 			}
 		});
 	});
-}
-function getProgress(id){
-  mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, db) {
-    var results = db.collection('results');
-    results.find({
-      "user.id": `${id}`
-    }).toArray(function(err, found) {
-      if (found[0] === undefined) {
-        saveUserToMongoDb(`${id}`,`${user.first_name}`, `${user.last_name}`, `${user.gender}`, `${user.locale}`, `${user.timezone}`)
-      }
-    });
-  });
 }
 function custom_hear_middleware(patterns, message) {
 
@@ -1208,38 +1192,39 @@ function checkProgress(incoming, user){
     results.find({
       "user.id": `${id}`
     }).toArray(function(err, found) {
-      console.log(">>>>>>>PROGRESS: "+ found[0].chicken_survey.progress)
+      var progress = found[0].chicken_survey.progress
+      if (progress === 0) {
+    		question001(incoming, user)
+    	} else if (progress === 1) {
+    		question001(incoming, user)
+    	} else if (progress === 2) {
+    		question002(incoming, user)
+    	} else if (progress === 3) {
+    		question003(incoming, user)
+    	} else if (progress === 4) {
+    		question004(incoming, user)
+    	} else if (progress === 5) {
+    		question006(incoming, user)
+    	} else if (progress === 6) {
+    		question007(incoming, user)
+    	} else if (progress === 7) {
+    		question009(incoming, user)
+    	} else if (progress === 8) {
+    		question010end(incoming, user)
+    	} else if (progress === 11) {
+    		question011(incoming, user)
+    	} else if (progress === 12) {
+    		question012(incoming, user)
+    	} else if (progress === 13) {
+    		question013(incoming, user)
+    	} else if (progress === 14) {
+    		question014(incoming, user)
+    	} else if (progress === 15) {
+    		question015(incoming, user)
+    	} else if (progress === 16) {
+        getEmoji(incoming, user)
+      }
     });
   });
-	if (progress === 0) {
-		question001(incoming, user)
-	} else if (progress === 1) {
-		question001(incoming, user)
-	} else if (progress === 2) {
-		question002(incoming, user)
-	} else if (progress === 3) {
-		question003(incoming, user)
-	} else if (progress === 4) {
-		question004(incoming, user)
-	} else if (progress === 5) {
-		question006(incoming, user)
-	} else if (progress === 6) {
-		question007(incoming, user)
-	} else if (progress === 7) {
-		question009(incoming, user)
-	} else if (progress === 8) {
-		question010end(incoming, user)
-	} else if (progress === 11) {
-		question011(incoming, user)
-	} else if (progress === 12) {
-		question012(incoming, user)
-	} else if (progress === 13) {
-		question013(incoming, user)
-	} else if (progress === 14) {
-		question014(incoming, user)
-	} else if (progress === 15) {
-		question015(incoming, user)
-	} else if (progress === 16) {
-    getEmoji(incoming, user)
-  }
+
 }
