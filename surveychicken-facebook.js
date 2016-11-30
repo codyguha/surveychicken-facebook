@@ -129,6 +129,12 @@ controller.hears(['Continue'], 'message_received',custom_hear_middleware, functi
     checkProgress(incoming, user)
   });
 });
+controller.hears(['Nevermind'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  getProfile(incoming.user, function(err, user) {
+    checkProgress(incoming, user)
+  });
+});
+
 controller.hears(['Not right now'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     checkProgress(incoming, user)
@@ -140,7 +146,7 @@ controller.hears(['Not now','Maybe later'], 'message_received',custom_hear_middl
   });
 });
 controller.hears(['GET CHICKEN!','Get Chicken!', 'Get chicken!', 'get chicken'], 'message_received', function(bot, incoming) {
-  var progress = 0
+  var progress = 99
   getProfile(incoming.user, function(err, user) {
     getLocation(incoming, user)
     saveToMongoDb(incoming.user, progress, "progress")
@@ -1042,6 +1048,8 @@ function getLocation(incoming, user){
   });
 }
 function getChickenNow(incoming, user, city_name){
+  var progress = 16
+  saveToMongoDb(incoming.user, progress, "progress")
   var message = {
     "attachment":{
       "type":"template",
@@ -1061,8 +1069,8 @@ function getChickenNow(incoming, user, city_name){
               },
               {
                 "type":"postback",
-                "title":"Continue",
-                "payload":"Continue"
+                "title":"Nevermind",
+                "payload":"Nevermind"
               }
             ]
           }
@@ -1223,6 +1231,8 @@ function checkProgress(incoming, user){
     		question015(incoming, user)
     	} else if (progress === 16) {
         getEmoji(incoming, user)
+      }else if (progress === 99) {
+        bot.reply(incoming, `Text "hi" or "GET CHICKEN!" anytime :)`);
       }
     });
   });
