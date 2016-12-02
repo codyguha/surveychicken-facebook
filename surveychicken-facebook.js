@@ -1103,7 +1103,7 @@ function getFeedback(incoming, user){
             }
         ]
       }, function(response, convo) {
-        saveToMongoDb(id, response.payload, "feedback_type")
+        saveToMongoDb(incoming.user, response.payload, "feedback_type")
         getInput(response, convo);
         convo.next();
       });
