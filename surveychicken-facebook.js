@@ -222,7 +222,7 @@ function welcomeUser(incoming, user) {
       ]
   });
 }
-function welcomeMenu(incoming, user) {
+function surveyMenu(incoming, user) {
   userValidation(incoming.user, user);
   bot.reply(incoming, {
     "attachment": {
@@ -306,6 +306,10 @@ controller.on('facebook_postback', function(bot, incoming) {
       getProfile(incoming.user, function(err, user) {
         welcomeUser(incoming, user)
       });
+    } else if (incoming.payload === "chicken survey") {
+      getProfile(incoming.user, function(err, user) {
+        question001(incoming, user)
+      });
     }
 });
 controller.on('message_received', function(bot, incoming) {
@@ -328,6 +332,7 @@ controller.on('message_received', function(bot, incoming) {
     var payload = incoming.quick_reply.payload
     getProfile(incoming.user, function(err, user) {
       if (payload === "Take a survey") {
+        surveyMenu(incoming, user)
         question001(incoming, user)
       } else if (payload === "feedback"){
         getFeedback(incoming, user)
