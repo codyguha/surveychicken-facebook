@@ -115,11 +115,11 @@ controller.hears(['GPS'], 'message_received',custom_hear_middleware, function(bo
     getLocation(incoming, user)
   });
 });
-// controller.hears(['Menu'], 'message_received',custom_hear_middleware, function(bot, incoming) {
-//   getProfile(incoming.user, function(err, user) {
-//     welcomeMenu(incoming, user)
-//   });
-// });
+controller.hears(['Webtest'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  getProfile(incoming.user, function(err, user) {
+    webViewTest(incoming, user)
+  });
+});
 controller.hears(['hi', 'Hi'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     welcomeUser(incoming, user)
@@ -1287,6 +1287,40 @@ function getContact (incoming, user) {
 
   // endRemindUserCounter()
   // startRemindUserCounter(incoming)
+}
+function webViewTest(incoming, user) {
+  bot.reply(incoming, {
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "list",
+            "elements": [
+                {
+                    "title": "Reddit",
+                    "image_url": "https://www.wired.com/wp-content/uploads/2015/06/reddit-alien-blue-featured.jpg",
+                    "subtitle": "View front page",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://www.reddit.com",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://www.reddit.com/"
+                    },
+                    "buttons": [
+                        {
+                            "title": "View",
+                            "type": "web_url",
+                            "url": "https://www.reddit.com",
+                            "messenger_extensions": true,
+                            "webview_height_ratio": "tall",
+                            "fallback_url": "https://www.reddit.com/"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+});
 }
 function getEmail(incoming, user){
   var id = incoming.user
