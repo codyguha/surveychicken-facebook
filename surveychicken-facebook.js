@@ -244,14 +244,24 @@ function surveyMenu(incoming, user) {
                     ]
                 },
                 {
-                    "title": "Taco Survey",
-                    "subtitle": "A survey about your taco preferences",
-                    "image_url": "https://static1.squarespace.com/static/528a9147e4b0b66670e2ba08/530527e5e4b0f2cfe76767aa/530527e6e4b0658094bea6f0/1422389189840/LL-VeganTacos.jpg",
+                    "title": "Canadian Values",
+                    "image_url": "https://pbs.twimg.com/profile_images/525726532828794880/8cruESMv_400x400.png",
+                    "subtitle": "The Angus Reid Institute's national poll conducted in partnership with the CBC",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "http://angusreid.org/canadian-values-index/",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "http://angusreid.org/canadian-values-index/"
+                    },
                     "buttons": [
                         {
-                            "type":"postback",
-                            "title":"Begin survey",
-                            "payload":"taco survey"
+                            "title": "View",
+                            "type": "web_url",
+                            "url": "http://angusreid.org/canadian-values-index",
+                            "messenger_extensions": true,
+                            "webview_height_ratio": "tall",
+                            "fallback_url": "http://angusreid.org/canadian-values-index/"
                         }
                     ]
                 },
@@ -1296,24 +1306,24 @@ function webViewTest(incoming, user) {
             "template_type": "list",
             "elements": [
                 {
-                    "title": "Reddit",
-                    "image_url": "https://www.wired.com/wp-content/uploads/2015/06/reddit-alien-blue-featured.jpg",
-                    "subtitle": "View front page",
+                    "title": "Canadian Values",
+                    "image_url": "https://pbs.twimg.com/profile_images/525726532828794880/8cruESMv_400x400.png",
+                    "subtitle": "The Angus Reid Institute's national poll conducted in partnership with the CBC",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://www.reddit.com",
+                        "url": "http://angusreid.org/canadian-values-index/",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://www.reddit.com/"
+                        "fallback_url": "http://angusreid.org/canadian-values-index/"
                     },
                     "buttons": [
                         {
                             "title": "View",
                             "type": "web_url",
-                            "url": "https://www.reddit.com",
+                            "url": "http://angusreid.org/canadian-values-index",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://www.reddit.com/"
+                            "fallback_url": "http://angusreid.org/canadian-values-index/"
                         }
                     ]
                 },
