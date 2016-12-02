@@ -278,7 +278,7 @@ function surveyMenu(incoming, user) {
                     },
                     "buttons": [
                         {
-                            "title": "View",
+                            "title": "Begin Survey",
                             "type": "web_url",
                             "url": "https://www.surveymonkey.com/r/22XZM8K",
                             "messenger_extensions": true,
@@ -288,17 +288,27 @@ function surveyMenu(incoming, user) {
                     ]
                 },
                 {
-                    "title": "Coffee Survey",
-                    "subtitle": "A survey about your coffee preferences",
-                    "image_url": "http://www.asociatiaedelvais.ro/wp-content/uploads/2014/11/goodwp.com_163111.jpg",
+                    "title": "Vision Critical",
+                    "image_url": "https://pantheon.io/sites/default/files/Visioncritical_logo.jpg",
+                    "subtitle": "Sparq Visual Question Demo",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://showcasesurveys.visioncritical.com/S.aspx?s=14&r=Mn3eE41Ie8Gf331nP5Lp7C&so=true&a=95&as=a_B0Yc5_v6&fromdetect=1",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://showcasesurveys.visioncritical.com/S.aspx?s=14&r=Mn3eE41Ie8Gf331nP5Lp7C&so=true&a=95&as=a_B0Yc5_v6&fromdetect=1"
+                    },
                     "buttons": [
                         {
-                            "type":"postback",
-                            "title":"Begin survey",
-                            "payload":"coffee survey"
+                            "title": "Begin Survey",
+                            "type": "web_url",
+                            "url": "https://showcasesurveys.visioncritical.com/S.aspx?s=14&r=Mn3eE41Ie8Gf331nP5Lp7C&so=true&a=95&as=a_B0Yc5_v6&fromdetect=1",
+                            "messenger_extensions": true,
+                            "webview_height_ratio": "tall",
+                            "fallback_url": "https://showcasesurveys.visioncritical.com/S.aspx?s=14&r=Mn3eE41Ie8Gf331nP5Lp7C&so=true&a=95&as=a_B0Yc5_v6&fromdetect=1"
                         }
                     ]
-                },
+                }
               ]
         }
     }
@@ -1307,62 +1317,6 @@ function getContact (incoming, user) {
 
   // endRemindUserCounter()
   // startRemindUserCounter(incoming)
-}
-function webViewTest(incoming, user) {
-  bot.reply(incoming, {
-    "attachment": {
-        "type": "template",
-        "payload": {
-            "template_type": "list",
-            "elements": [
-                {
-                    "title": "Canadian Values",
-                    "image_url": "https://pbs.twimg.com/profile_images/525726532828794880/8cruESMv_400x400.png",
-                    "subtitle": "The Angus Reid Institute's national poll conducted in partnership with the CBC",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://angusreid.org/canadian-values-index/",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://angusreid.org/canadian-values-index/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "View",
-                            "type": "web_url",
-                            "url": "http://angusreid.org/canadian-values-index",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "http://angusreid.org/canadian-values-index/"
-                        }
-                    ]
-                },
-                {
-                    "title": "Reddit",
-                    "image_url": "https://www.wired.com/wp-content/uploads/2015/06/reddit-alien-blue-featured.jpg",
-                    "subtitle": "View front page",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "https://www.reddit.com",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "https://www.reddit.com/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "View",
-                            "type": "web_url",
-                            "url": "https://www.reddit.com",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "https://www.reddit.com/"
-                        }
-                    ]
-                }
-            ]
-        }
-    }
-});
 }
 function getEmail(incoming, user){
   var id = incoming.user
