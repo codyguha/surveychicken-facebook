@@ -1114,7 +1114,7 @@ function getFeedback(incoming, user){
           }, function(response, convo) {
           convo.say('Thanks for the feedback.  We review every submission and may reach out for more info if you approve.');
 
-          console.log(">>>>>>>>>>>>>>>>>>>>>FEEDBACK!!!: "+response)
+          console.log(">>>>>>>>>>>>>>>>>>>>>FEEDBACK!!!: "+response.stringify({a:1,b:2,c:{d:1,e:[1,2]}}, null, "\t"))
 
           convo.next();
         });
