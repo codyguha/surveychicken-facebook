@@ -1115,6 +1115,11 @@ function getFeedback(incoming, user){
           convo.say('Thanks for the feedback.  We review every submission and may reach out for more info if you approve.');
           var json_object = JSON.stringify(response, null, "\t")
           console.log(">>>>>>>>>>>>>>>>>>>>>FEEDBACK!!!: "+ json_object)
+          if (response.attachments.type === "image") {
+            console.log(">>>>>>>>>>>>>>>>>>>>>GOT-IMAGE!!!")
+          } else if (response.attachments.type === "video") {
+            console.log(">>>>>>>>>>>>>>>>>>>>>GOT-VIDEO!!!")
+          }
 
           convo.next();
         });
