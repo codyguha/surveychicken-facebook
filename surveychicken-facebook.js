@@ -114,7 +114,7 @@ controller.hears(['GPS'], 'message_received',custom_hear_middleware, function(bo
     getLocation(incoming, user)
   });
 });
-controller.hears(['Hey'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+controller.hears(['Menu'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     welcomeMenu(incoming, user)
   });
@@ -231,14 +231,38 @@ function welcomeMenu(incoming, user) {
             "template_type": "list",
             "elements": [
                 {
-                    "title": "Survey Chicken!",
-                    "subtitle": "Take a short survey about your chicken preferences",
+                    "title": "Chicken Survey",
+                    "subtitle": "Take a survey about your chicken preferences",
                     "image_url": "http://fb-timeline-cover.com/covers-images/download/Robot%20Chicken%20Adult%20Swim%20Cartoon.jpg",
                     "buttons": [
                         {
                             "type":"postback",
-                            "title":"Take a survey",
-                            "payload":"Take a survey"
+                            "title":"Take survey",
+                            "payload":"chicken survey"
+                        }
+                    ]
+                },
+                {
+                    "title": "Taco Survey",
+                    "subtitle": "Take a survey about your taco preferences",
+                    "image_url": "http://media.istockphoto.com/vectors/taco-vector-id166078511?k=6&m=166078511&s=170667a&w=0&h=rNJoFnZzAA5eoynrUnfsYDffVk0WDabVkIjC6Pr_H7M=",
+                    "buttons": [
+                        {
+                            "type":"postback",
+                            "title":"Take survey",
+                            "payload":"taco survey"
+                        }
+                    ]
+                },
+                {
+                    "title": "Cake Survey",
+                    "subtitle": "Take a survey about your cake preferences",
+                    "image_url": "http://data.whicdn.com/images/66001440/original.jpg",
+                    "buttons": [
+                        {
+                            "type":"postback",
+                            "title":"Take survey",
+                            "payload":"cake survey"
                         }
                     ]
                 },
