@@ -1122,25 +1122,32 @@ function getFeedback(incoming, user){
       if (response.attachments) {
         if (response.attachments[0].type === "image"){
           convo.say('Thanks for the image.');
-          approveInput(response, convo, response.attachments[0].type)
+          saveToMongoDb(incoming.user, response.attachments[0].payload.url, "feedback")
+          approveInput(response, convo)
           convo.next();
           console.log(">>>>>>>>>>>>>>>>>>>>>GOT-IMAGE!!!")
         } else if (response.attachments[0].type === "video"){
+          saveToMongoDb(incoming.user, response.attachments[0].payload.url, "feedback")
           convo.say('Thanks for the video.');
+          approveInput(response, convo)
           convo.next();
           console.log(">>>>>>>>>>>>>>>>>>>>>GOT-VIDEO!!!")
         } else {
           convo.say('Thanks for whatever that is.');
+          saveToMongoDb(incoming.user, response.attachments[0].payload, "feedback")
+          approveInput(response, convo)
           convo.next();
           console.log(">>>>>>>>>>>>>>>>>>>>>GOT-SOMETHING!!!")
         }
       } else {
         convo.say('Thanks for the feedback.');
+        saveToMongoDb(incoming.user, response.text, "feedback")
+        approveInput(response, convo)
         convo.next();
         console.log(">>>>>>>>>>>>>>>>>>>>>GOT-TEXT!!!")
       }
     }
-    var approveInput = function(response, convo, type){
+    var approveInput = function(response, convo){
       convo.ask({
         text: 'We review every submission and may reach out for more info if you approve.',
         quick_replies: [
@@ -1156,13 +1163,11 @@ function getFeedback(incoming, user){
             }
         ]
       }, function(response, convo) {
-        saveToMongoDb(incoming.user, response, "feedback")
         convo.say(`Got it. Thanks again ${user.first_name}`);
         convo.next();
       });
     }
     bot.startConversation(incoming, askFeedbackType);
-
 }
 function getEmoji(incoming, user){
   var progress = 16
