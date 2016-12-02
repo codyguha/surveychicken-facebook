@@ -1119,7 +1119,7 @@ function getFeedback(incoming, user){
           convo.next();
         });
     };
-    bot.startConversation(message, askFeedbackType);
+    bot.startConversation(incoming, askFeedbackType);
 
 }
 function getEmoji(incoming, user){
