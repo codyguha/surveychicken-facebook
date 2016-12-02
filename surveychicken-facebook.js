@@ -115,11 +115,11 @@ controller.hears(['GPS'], 'message_received',custom_hear_middleware, function(bo
     getLocation(incoming, user)
   });
 });
-controller.hears(['Menu'], 'message_received',custom_hear_middleware, function(bot, incoming) {
-  getProfile(incoming.user, function(err, user) {
-    welcomeMenu(incoming, user)
-  });
-});
+// controller.hears(['Menu'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+//   getProfile(incoming.user, function(err, user) {
+//     welcomeMenu(incoming, user)
+//   });
+// });
 controller.hears(['hi', 'Hi'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     welcomeUser(incoming, user)
