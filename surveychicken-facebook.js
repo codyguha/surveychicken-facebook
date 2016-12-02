@@ -1107,7 +1107,7 @@ function getFeedback(incoming, user){
         getInput(response, convo);
         convo.next();
       });
-    };
+  };
     var getInput = function(response, convo) {
         convo.ask({
           text: 'Thanks for that.  Feel free to send a text, a photo, or even a video to provide feedback.',
@@ -1121,23 +1121,45 @@ function getFeedback(incoming, user){
     var determineInput = function(response, convo) {
       if (response.attachments) {
         if (response.attachments[0].type === "image"){
-          convo.say('Thanks for the image.  We review every submission and may reach out for more info if you approve.');
+          convo.say('Thanks for the image.');
+          approveInput(response, convo, response.attachments[0].type)
           convo.next();
           console.log(">>>>>>>>>>>>>>>>>>>>>GOT-IMAGE!!!")
         } else if (response.attachments[0].type === "video"){
-          convo.say('Thanks for the video.  We review every submission and may reach out for more info if you approve.');
+          convo.say('Thanks for the video.');
           convo.next();
           console.log(">>>>>>>>>>>>>>>>>>>>>GOT-VIDEO!!!")
         } else {
-          convo.say('Thanks for whatever that is.  We review every submission and may reach out for more info if you approve.');
+          convo.say('Thanks for whatever that is.');
           convo.next();
           console.log(">>>>>>>>>>>>>>>>>>>>>GOT-SOMETHING!!!")
         }
       } else {
-        convo.say('Thanks for the feedback.  We review every submission and may reach out for more info if you approve.');
+        convo.say('Thanks for the feedback.');
         convo.next();
         console.log(">>>>>>>>>>>>>>>>>>>>>GOT-TEXT!!!")
       }
+    }
+    var approveInput = function(response, convo, type){
+      convo.ask({
+        text: 'We review every submission and may reach out for more info if you approve.',
+        quick_replies: [
+            {
+                "content_type": "text",
+                "title": "Approve",
+                "payload": "Approve",
+            },
+            {
+                "content_type": "text",
+                "title": "No thanks",
+                "payload": "Nope",
+            }
+        ]
+      }, function(response, convo) {
+        saveToMongoDb(incoming.user, response, "feedback")
+        convo.say(`Got it. Thanks again ${user.first_name}`);
+        convo.next();
+      });
     }
     bot.startConversation(incoming, askFeedbackType);
 
