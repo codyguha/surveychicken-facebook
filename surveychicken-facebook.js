@@ -289,7 +289,7 @@ function surveyMenu(incoming, user) {
                 },
                 {
                     "title": "Vision Critical",
-                    "image_url": "https://pantheon.io/sites/default/files/Visioncritical_logo.jpg",
+                    "image_url": "https://pbs.twimg.com/profile_images/732347414393192448/GEiPmQwc.jpg",
                     "subtitle": "Sparq Visual Question Demo",
                     "default_action": {
                         "type": "web_url",
