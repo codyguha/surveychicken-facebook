@@ -253,8 +253,8 @@ controller.on('message_received', function(bot, incoming) {
           var city_name = location_formatted.split(', ')[1]
           saveLocationToMongoDb(id, city_name)
           getChickenNow(incoming, user, city_name)
-          console.log(">>>>>>>>>>>>>>>>>>>>>FORMATTED!!!: "+data.results[0].formatted_address)// do something with data
-          console.log(">>>>>>>>>>>>>>>>>>>>>CITY!!!: "+city_name)//
+          console.log(">>>>>>>>>>>>>>>>>>>>>FORMATTED!!!: "+data.results[0].formatted_address)
+          console.log(">>>>>>>>>>>>>>>>>>>>>CITY!!!: "+city_name)
         });
     });
   } else if(incoming.quick_reply){
@@ -1085,33 +1085,41 @@ function getChickenNow(incoming, user, city_name){
   }
   bot.reply(incoming, message);
 }
+
 function getFeedback(incoming, user){
-  var id = incoming.user
-    bot.startConversation(incoming, function(err, convo) {
+  var askFeedbackType = function(err, convo) {
+      convo.ask({
+        text: 'Ok, as a first step. Can you please let me know if this is going to be "Positive" or "Negative" feedback.',
+        quick_replies: [
+            {
+                "content_type": "text",
+                "title": "Positive",
+                "payload": "Positive",
+            },
+            {
+                "content_type": "text",
+                "title": "Negative",
+                "payload": "Negative",
+            }
+        ]
+      }, function(response, convo) {
+        saveToMongoDb(id, response.payload, "feedback_type")
+        getInput(response, convo);
+        convo.next();
+      });
+    };
+    var getInput = function(response, convo) {
         convo.ask({
-          text: 'Ok, as a first step. Can you please let me know if this is going to be "Positive" or "Negative" feedback.',
-          quick_replies: [
-              {
-                  "content_type": "text",
-                  "title": "Postive",
-                  "payload": "Positive",
-              },
-              {
-                  "content_type": "text",
-                  "title": "Negative",
-                  "payload": "Negative",
-              }
-          ]
-        }, function(response, convo) {
-            saveToMongoDb(id, response.payload, "feedback_type")
-            // getContact(incoming, user)
-            convo.ask({
-              text: "Thanks for that.  Feel free to send a text, a photo, or even a video to provide feedback"
-            }, function(response, convo) {
-                convo.next
-            });
-          });
-    });
+          text: 'Thanks for that.  Feel free to send a text, a photo, or even a video to provide feedback.',
+          }, function(response, convo) {
+          convo.say('Thanks for the feedback.  We review every submission and may reach out for more info if you approve.');
+
+          console.log(">>>>>>>>>>>>>>>>>>>>>FEEDBACK!!!: "+response)
+
+          convo.next();
+        });
+    };
+    bot.startConversation(message, askFeedbackType);
 
 }
 function getEmoji(incoming, user){
