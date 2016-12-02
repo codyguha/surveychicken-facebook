@@ -208,6 +208,11 @@ function welcomeUser(incoming, user) {
               "content_type": "text",
               "title": "Tell me a joke",
               "payload": "Tell me a joke",
+          },
+          {
+              "content_type": "text",
+              "title": "Submit Feedback",
+              "payload": "feedback",
           }
       ]
   });
@@ -258,6 +263,8 @@ controller.on('message_received', function(bot, incoming) {
     getProfile(incoming.user, function(err, user) {
       if (payload === "Take a survey") {
         question001(incoming, user)
+      } else if (payload === "feedback"){
+        getFeedback(incoming, user)
       } else if (payload === "response_01"){
         question002(incoming, user)
         saveToMongoDb(id, text, "frequency")
@@ -1077,6 +1084,35 @@ function getChickenNow(incoming, user, city_name){
     }
   }
   bot.reply(incoming, message);
+}
+function getFeedback(incoming, user){
+  var id = incoming.user
+    bot.startConversation(incoming, function(err, convo) {
+        convo.ask({
+          text: 'Ok, as a first step. Can you please let me know if this is going to be "Positive" or "Negative" feedback.',
+          quick_replies: [
+              {
+                  "content_type": "text",
+                  "title": "Postive",
+                  "payload": "Positive",
+              },
+              {
+                  "content_type": "text",
+                  "title": "Negative",
+                  "payload": "Negative",
+              }
+          ]
+        }, function(response, convo) {
+            saveToMongoDb(id, response.payload, "feedback_type")
+            // getContact(incoming, user)
+            convo.ask({
+              text: "Thanks for that.  Feel free to send a text, a photo, or even a video to provide feedback"
+            }, function(response, convo) {
+                convo.next
+            });
+          });
+    });
+
 }
 function getEmoji(incoming, user){
   var progress = 16
