@@ -232,43 +232,43 @@ function welcomeMenu(incoming, user) {
             "elements": [
                 {
                     "title": "Chicken Survey",
-                    "subtitle": "Take a survey about your chicken preferences",
+                    "subtitle": "A survey about your chicken preferences",
                     "image_url": "http://fb-timeline-cover.com/covers-images/download/Robot%20Chicken%20Adult%20Swim%20Cartoon.jpg",
                     "buttons": [
                         {
                             "type":"postback",
-                            "title":"Take survey",
+                            "title":"Begin survey",
                             "payload":"chicken survey"
                         }
                     ]
                 },
                 {
                     "title": "Taco Survey",
-                    "subtitle": "Take a survey about your taco preferences",
-                    "image_url": "http://media.istockphoto.com/vectors/taco-vector-id166078511?k=6&m=166078511&s=170667a&w=0&h=rNJoFnZzAA5eoynrUnfsYDffVk0WDabVkIjC6Pr_H7M=",
+                    "subtitle": "A survey about your taco preferences",
+                    "image_url": "http://www.tacobueno.com/media/1338/partytacolarge.png?quality=65",
                     "buttons": [
                         {
                             "type":"postback",
-                            "title":"Take survey",
+                            "title":"Begin survey",
                             "payload":"taco survey"
                         }
                     ]
                 },
                 {
                     "title": "Cake Survey",
-                    "subtitle": "Take a survey about your cake preferences",
+                    "subtitle": "A survey about your cake preferences",
                     "image_url": "http://data.whicdn.com/images/66001440/original.jpg",
                     "buttons": [
                         {
                             "type":"postback",
-                            "title":"Take survey",
+                            "title":"Begin survey",
                             "payload":"cake survey"
                         }
                     ]
                 },
                 {
                     "title": "Get chicken!",
-                    "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
+                    "image_url":"http://www.clipartbest.com/cliparts/LcK/z79/LcKz797ca.png",
                     "subtitle": "",
                     "buttons": [
                       {
