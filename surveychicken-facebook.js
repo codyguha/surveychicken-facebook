@@ -266,14 +266,24 @@ function surveyMenu(incoming, user) {
                     ]
                 },
                 {
-                    "title": "Cake Survey",
-                    "subtitle": "A survey about your cake preferences",
-                    "image_url": "http://data.whicdn.com/images/66001440/original.jpg",
+                    "title": "Survey Monkey",
+                    "image_url": "http://help.evalandgo.com/blog/images/thumbnail_two.jpg",
+                    "subtitle": "Survey about surveys",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://www.surveymonkey.com/r/22XZM8K",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://www.surveymonkey.com/r/22XZM8K"
+                    },
                     "buttons": [
                         {
-                            "type":"postback",
-                            "title":"Begin survey",
-                            "payload":"cake survey"
+                            "title": "View",
+                            "type": "web_url",
+                            "url": "https://www.surveymonkey.com/r/22XZM8K",
+                            "messenger_extensions": true,
+                            "webview_height_ratio": "tall",
+                            "fallback_url": "https://www.surveymonkey.com/r/22XZM8K"
                         }
                     ]
                 },
