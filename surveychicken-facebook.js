@@ -267,25 +267,18 @@ function welcomeMenu(incoming, user) {
                     ]
                 },
                 {
-                    "title": "Get chicken!",
-                    "image_url":"http://www.clipartbest.com/cliparts/LcK/z79/LcKz797ca.png",
-                    "subtitle": "",
+                    "title": "Coffee Survey",
+                    "subtitle": "A survey about your coffee preferences",
+                    "image_url": "http://www.asociatiaedelvais.ro/wp-content/uploads/2014/11/goodwp.com_163111.jpg",
                     "buttons": [
-                      {
-                          "type":"postback",
-                          "title":"Get chicken",
-                          "payload":"Get chicken"
-                      }
+                        {
+                            "type":"postback",
+                            "title":"Begin survey",
+                            "payload":"coffee survey"
+                        }
                     ]
-                }
-              ],
-             "buttons": [
-                {
-                    "title": "View More",
-                    "type": "postback",
-                    "payload": "payload"
-                }
-            ]
+                },
+              ]
         }
     }
 });
