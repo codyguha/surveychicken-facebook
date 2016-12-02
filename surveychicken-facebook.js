@@ -1113,8 +1113,8 @@ function getFeedback(incoming, user){
           text: 'Thanks for that.  Feel free to send a text, a photo, or even a video to provide feedback.',
           }, function(response, convo) {
           convo.say('Thanks for the feedback.  We review every submission and may reach out for more info if you approve.');
-
-          console.log(">>>>>>>>>>>>>>>>>>>>>FEEDBACK!!!: "+response.stringify({a:1,b:2,c:{d:1,e:[1,2]}}, null, "\t"))
+          var json_object = JSON.stringify(response, null, "\t")
+          console.log(">>>>>>>>>>>>>>>>>>>>>FEEDBACK!!!: "+ json_object)
 
           convo.next();
         });
