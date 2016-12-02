@@ -17,6 +17,7 @@ controller.setupWebserver(process.env.PORT || 3000, function(err, webserver) {
         console.log('ONLINE!');
     });
 });
+controller.on('tick', function(bot, event) { });
 /// GET USER INFO !!!
 function getProfile(id, cb) {
     if (!cb) cb = Function.prototype
