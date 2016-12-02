@@ -252,7 +252,8 @@ function welcomeMenu(incoming, user) {
                           "payload":"Take a survey"
                       }
                     ]
-                },
+                }
+              ],
              "buttons": [
                 {
                     "title": "View More",
