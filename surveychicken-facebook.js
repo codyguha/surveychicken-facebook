@@ -1120,11 +1120,11 @@ function getFeedback(incoming, user){
     };
     var determineInput = function(response, convo) {
       if (response.attachments) {
-        if (response.attachments.type === "image"){
+        if (response.attachments[0].type === "image"){
           convo.say('Thanks for the image.  We review every submission and may reach out for more info if you approve.');
           convo.next();
           console.log(">>>>>>>>>>>>>>>>>>>>>GOT-IMAGE!!!")
-        } else if (response.attachments.type === "video"){
+        } else if (response.attachments[0].type === "video"){
           convo.say('Thanks for the video.  We review every submission and may reach out for more info if you approve.');
           convo.next();
           console.log(">>>>>>>>>>>>>>>>>>>>>GOT-VIDEO!!!")
