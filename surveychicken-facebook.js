@@ -1112,18 +1112,33 @@ function getFeedback(incoming, user){
         convo.ask({
           text: 'Thanks for that.  Feel free to send a text, a photo, or even a video to provide feedback.',
           }, function(response, convo) {
-          convo.say('Thanks for the feedback.  We review every submission and may reach out for more info if you approve.');
           var json_object = JSON.stringify(response, null, "\t")
           console.log(">>>>>>>>>>>>>>>>>>>>>FEEDBACK!!!: "+ json_object)
-          if (response.attachments.type === "image") {
-            console.log(">>>>>>>>>>>>>>>>>>>>>GOT-IMAGE!!!")
-          } else if (response.attachments.type === "video") {
-            console.log(">>>>>>>>>>>>>>>>>>>>>GOT-VIDEO!!!")
-          }
-
+          determineInput(response, convo)
           convo.next();
         });
     };
+    var determineInput = function(response, convo) {
+      if (response.attachments) {
+        if (response.attachments.type === "image"){
+          convo.say('Thanks for the image.  We review every submission and may reach out for more info if you approve.');
+          convo.next();
+          console.log(">>>>>>>>>>>>>>>>>>>>>GOT-IMAGE!!!")
+        } else if (response.attachments.type === "video"){
+          convo.say('Thanks for the video.  We review every submission and may reach out for more info if you approve.');
+          convo.next();
+          console.log(">>>>>>>>>>>>>>>>>>>>>GOT-VIDEO!!!")
+        } else {
+          convo.say('Thanks for whatever that is.  We review every submission and may reach out for more info if you approve.');
+          convo.next();
+          console.log(">>>>>>>>>>>>>>>>>>>>>GOT-SOMETHING!!!")
+        }
+      } else {
+        convo.say('Thanks for the feedback.  We review every submission and may reach out for more info if you approve.');
+        convo.next();
+        console.log(">>>>>>>>>>>>>>>>>>>>>GOT-TEXT!!!")
+      }
+    }
     bot.startConversation(incoming, askFeedbackType);
 
 }
