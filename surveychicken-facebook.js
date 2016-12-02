@@ -267,18 +267,6 @@ function welcomeMenu(incoming, user) {
                     ]
                 },
                 {
-                    "title": "Jokes",
-                    "image_url": "",
-                    "subtitle": "",
-                    "buttons": [
-                      {
-                          "type":"postback",
-                          "title":"Tell me a joke",
-                          "payload":"Tell me a joke"
-                      }
-                    ]
-                },
-                {
                     "title": "Get chicken!",
                     "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
                     "subtitle": "",
