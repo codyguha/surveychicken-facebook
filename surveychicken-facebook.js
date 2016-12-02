@@ -114,6 +114,11 @@ controller.hears(['GPS'], 'message_received',custom_hear_middleware, function(bo
     getLocation(incoming, user)
   });
 });
+controller.hears(['Hey'], 'message_received',custom_hear_middleware, function(bot, incoming) {
+  getProfile(incoming.user, function(err, user) {
+    welcomeMenu(incoming, user)
+  });
+});
 controller.hears(['hi', 'Hi'], 'message_received',custom_hear_middleware, function(bot, incoming) {
   getProfile(incoming.user, function(err, user) {
     welcomeUser(incoming, user)
@@ -216,6 +221,114 @@ function welcomeUser(incoming, user) {
           }
       ]
   });
+}
+function welcomeMenu(incoming, user) {
+  userValidation(incoming.user, user);
+  bot.reply(incoming, {
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "list",
+            "elements": [
+                {
+                    "title": "Classic T-Shirt Collection",
+                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/collection.png",
+                    "subtitle": "See all our colors",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://peterssendreceiveapp.ngrok.io/shop_collection",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                    },
+                    "buttons": [
+                        {
+                            "title": "View",
+                            "type": "web_url",
+                            "url": "https://peterssendreceiveapp.ngrok.io/collection",
+                            "messenger_extensions": true,
+                            "webview_height_ratio": "tall",
+                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        }
+                    ]
+                },
+                {
+                    "title": "Classic White T-Shirt",
+                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+                    "subtitle": "100% Cotton, 200% Comfortable",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                    },
+                    "buttons": [
+                        {
+                            "title": "Shop Now",
+                            "type": "web_url",
+                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100",
+                            "messenger_extensions": true,
+                            "webview_height_ratio": "tall",
+                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        }
+                    ]
+                },
+                {
+                    "title": "Classic Blue T-Shirt",
+                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
+                    "subtitle": "100% Cotton, 200% Comfortable",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                    },
+                    "buttons": [
+                        {
+                            "title": "Shop Now",
+                            "type": "web_url",
+                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=101",
+                            "messenger_extensions": true,
+                            "webview_height_ratio": "tall",
+                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        }
+                    ]
+                },
+                {
+                    "title": "Classic Black T-Shirt",
+                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/black-t-shirt.png",
+                    "subtitle": "100% Cotton, 200% Comfortable",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=102",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                    },
+                    "buttons": [
+                        {
+                            "title": "Shop Now",
+                            "type": "web_url",
+                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=102",
+                            "messenger_extensions": true,
+                            "webview_height_ratio": "tall",
+                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        }
+                    ]
+                }
+            ],
+             "buttons": [
+                {
+                    "title": "View More",
+                    "type": "postback",
+                    "payload": "payload"
+                }
+            ]
+        }
+    }
+});
 }
 function startJoke(incoming) {
   bot.reply(incoming, {
