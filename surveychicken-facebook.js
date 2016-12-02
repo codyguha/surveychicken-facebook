@@ -333,7 +333,6 @@ controller.on('message_received', function(bot, incoming) {
     getProfile(incoming.user, function(err, user) {
       if (payload === "Take a survey") {
         surveyMenu(incoming, user)
-        question001(incoming, user)
       } else if (payload === "feedback"){
         getFeedback(incoming, user)
       } else if (payload === "response_01"){
