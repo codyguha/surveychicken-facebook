@@ -249,19 +249,19 @@ function surveyMenu(incoming, user) {
                     "subtitle": "The Angus Reid Institute's national poll conducted in partnership with the CBC",
                     "default_action": {
                         "type": "web_url",
-                        "url": "http://angusreid.org/canadian-values-index/",
+                        "url": "https://angusreid.org/wp-content/uploads/2016/09/",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "http://angusreid.org/canadian-values-index/"
+                        "fallback_url": "https://angusreid.org/canadian-values-index/"
                     },
                     "buttons": [
                         {
                             "title": "View",
                             "type": "web_url",
-                            "url": "http://angusreid.org/canadian-values-index",
+                            "url": "https://angusreid.org/canadian-values-index",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "http://angusreid.org/canadian-values-index/"
+                            "fallback_url": "https://angusreid.org/canadian-values-index/"
                         }
                     ]
                 },
