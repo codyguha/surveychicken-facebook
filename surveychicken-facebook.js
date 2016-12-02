@@ -245,7 +245,7 @@ function welcomeMenu(incoming, user) {
                 {
                     "title": "Taco Survey",
                     "subtitle": "A survey about your taco preferences",
-                    "image_url": "http://www.tacobueno.com/media/1338/partytacolarge.png?quality=65",
+                    "image_url": "https://static1.squarespace.com/static/528a9147e4b0b66670e2ba08/530527e5e4b0f2cfe76767aa/530527e6e4b0658094bea6f0/1422389189840/LL-VeganTacos.jpg",
                     "buttons": [
                         {
                             "type":"postback",
