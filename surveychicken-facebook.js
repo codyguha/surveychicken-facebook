@@ -232,6 +232,7 @@ function welcomeMenu(incoming, user) {
             "elements": [
                 {
                     "title": "Survey Chicken!",
+                    "subtitle": "Take a short survey about your chicken preferences",
                     "image_url": "http://fb-timeline-cover.com/covers-images/download/Robot%20Chicken%20Adult%20Swim%20Cartoon.jpg",
                     "buttons": [
                         {
@@ -242,14 +243,26 @@ function welcomeMenu(incoming, user) {
                     ]
                 },
                 {
-                    "title": "Tell me a Joke",
+                    "title": "Jokes",
                     "image_url": "",
-                    "subtitle": "100% Cotton, 200% Comfortable",
+                    "subtitle": "",
                     "buttons": [
                       {
                           "type":"postback",
-                          "title":"Take a survey",
-                          "payload":"Take a survey"
+                          "title":"Tell me a joke",
+                          "payload":"Tell me a joke"
+                      }
+                    ]
+                },
+                {
+                    "title": "Get chicken!",
+                    "image_url":"http://www.digitalnativescontent.com/wp-content/uploads/2016/01/GHTF-outdoor.jpg",
+                    "subtitle": "",
+                    "buttons": [
+                      {
+                          "type":"postback",
+                          "title":"Get chicken",
+                          "payload":"Get chicken"
                       }
                     ]
                 }
