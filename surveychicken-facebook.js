@@ -249,10 +249,10 @@ function surveyMenu(incoming, user) {
                     "subtitle": "The Angus Reid Institute's national poll conducted in partnership with the CBC",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://angusreid.org/wp-content/uploads/2016/09/",
+                        "url": "https://stormy-retreat-66528.herokuapp.com/cvi/",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://angusreid.org/canadian-values-index/"
+                        "fallback_url": "https://stormy-retreat-66528.herokuapp.com/cvi/"
                     },
                     "buttons": [
                         {
